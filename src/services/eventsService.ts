@@ -9,3 +9,12 @@ function listActiveEvents(): WeatherEvent[] {
 export async function getActiveEvents(): Promise<WeatherEvent[]> {
   return simulateDelay(listActiveEvents());
 }
+
+export async function getEventById(id: string): Promise<WeatherEvent | null> {
+  const event = eventsMock.find((e) => e.id === id) ?? null;
+  return simulateDelay(event);
+}
+
+export async function getAllEvents(): Promise<WeatherEvent[]> {
+  return simulateDelay(eventsMock);
+}

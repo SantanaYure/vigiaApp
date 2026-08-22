@@ -1,0 +1,29 @@
+.search-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-gray-300);
+  border-radius: var(--radius-md);
+  padding: 9px 12px;
+  min-width: 240px;
+  transition: border-color var(--transition-fast);
+}
+
+.search-input:focus-within {
+  border-color: var(--color-cyan-500);
+}
+
+.search-input-icon {
+  color: var(--color-gray-400);
+  flex-shrink: 0;
+}
+
+.search-input input {
+  border: none;
+  outline: none;
+  font-size: 14px;
+  width: 100%;
+  color: var(--color-gray-800);
+  background: transparent;
+}

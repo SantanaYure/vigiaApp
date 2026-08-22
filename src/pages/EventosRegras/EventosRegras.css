@@ -1,0 +1,43 @@
+.eventos-regras-page {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.eventos-regras-section {
+  background-color: var(--color-white);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+}
+
+.eventos-regras-section h2 {
+  font-size: 15.5px;
+  font-weight: 700;
+  color: var(--color-navy-800);
+  margin-bottom: 14px;
+}
+
+.eventos-regras-hint {
+  font-size: 13px;
+  color: var(--color-gray-500);
+  margin-top: -8px;
+  margin-bottom: 16px;
+}
+
+.threshold-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  transition: opacity var(--transition-base);
+}
+
+.threshold-grid-pending {
+  opacity: 0.7;
+}
+
+@media (max-width: 900px) {
+  .threshold-grid {
+    grid-template-columns: 1fr;
+  }
+}

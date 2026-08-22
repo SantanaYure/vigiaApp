@@ -1,0 +1,42 @@
+.threshold-slider {
+  background-color: var(--color-white);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+}
+
+.threshold-slider-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.threshold-slider-label {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--color-gray-700);
+}
+
+.threshold-slider-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-cyan-600);
+  background-color: var(--color-info-bg);
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+.threshold-slider input[type="range"] {
+  width: 100%;
+  accent-color: var(--color-cyan-500);
+  cursor: pointer;
+}
+
+.threshold-slider-scale {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--color-gray-400);
+  margin-top: 4px;
+}

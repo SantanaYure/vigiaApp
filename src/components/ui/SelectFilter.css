@@ -1,0 +1,16 @@
+.select-filter {
+  padding: 9px 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-gray-300);
+  background-color: var(--color-white);
+  font-size: 14px;
+  color: var(--color-gray-700);
+  min-width: 160px;
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
+}
+
+.select-filter:focus {
+  outline: none;
+  border-color: var(--color-cyan-500);
+}

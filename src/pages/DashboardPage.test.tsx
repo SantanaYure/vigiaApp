@@ -3,6 +3,7 @@ import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 import { DashboardPage } from "./DashboardPage";
 import * as eventsService from "../services/eventsService";
+import * as communicationsService from "../services/communicationsService";
 
 function renderDashboard() {
   return render(
@@ -44,5 +45,27 @@ describe("DashboardPage", () => {
     const alert = await screen.findByRole("alert");
     expect(alert).toHaveTextContent("Falha ao atualizar dados climáticos");
     expect(screen.getByRole("button", { name: "Tentar novamente" })).toBeInTheDocument();
+  });
+
+  it("shows recent communications content distinct from the attention list", async () => {
+    renderDashboard();
+
+    await screen.findByText("Eventos ativos");
+
+    const commSection = screen.getByText("Comunicações recentes").closest("section");
+    expect(commSection).not.toBeNull();
+    const withinComm = within(commSection as HTMLElement);
+    expect(withinComm.getAllByText(/SMS|E-mail/).length).toBeGreaterThan(0);
+    expect(withinComm.getByText("Simulada")).toBeInTheDocument();
+  });
+
+  it("shows both empty states when there are no events and no communications", async () => {
+    vi.spyOn(eventsService, "getActiveEvents").mockResolvedValueOnce([]);
+    vi.spyOn(communicationsService, "getAllCommunications").mockResolvedValueOnce([]);
+
+    renderDashboard();
+
+    expect(await screen.findByText("Nenhum evento em aberto")).toBeInTheDocument();
+    expect(screen.getByText("Nenhuma comunicação gerada")).toBeInTheDocument();
   });
 });

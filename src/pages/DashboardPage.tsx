@@ -53,11 +53,13 @@ export function DashboardPage() {
                 description="Não há eventos climáticos exigindo atenção no momento."
               />
             ) : (
-              <div className={styles.attentionList}>
+              <ul className={styles.attentionList}>
                 {data.attentionEvents.map((event) => (
-                  <AttentionEventRow key={event.id} event={event} />
+                  <li key={event.id}>
+                    <AttentionEventRow event={event} />
+                  </li>
                 ))}
-              </div>
+              </ul>
             )}
           </section>
 

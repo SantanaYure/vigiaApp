@@ -13,7 +13,11 @@ export function AlertBanner({ tone = "danger", title, description, action }: Ale
   const palette = tonePalette[tone];
 
   return (
-    <div className={styles.banner} style={{ backgroundColor: palette.bg, borderColor: palette.dot }} role="alert">
+    <div
+      className={styles.banner}
+      style={{ backgroundColor: palette.bg, borderColor: palette.dot, color: palette.text }}
+      role="alert"
+    >
       <span className={styles.dot} style={{ backgroundColor: palette.dot }} />
       <div className={styles.textGroup}>
         <p className={styles.title} style={{ color: palette.text }}>

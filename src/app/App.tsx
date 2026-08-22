@@ -6,6 +6,7 @@ import { EventDetailPage } from "../pages/EventDetailPage";
 import { CommunicationsPage } from "../pages/CommunicationsPage";
 import { CommunicationDetailPage } from "../pages/CommunicationDetailPage";
 import { HistoryPage } from "../pages/HistoryPage";
+import { NotFoundPage } from "../pages/NotFoundPage";
 
 export function App() {
   return (
@@ -18,6 +19,7 @@ export function App() {
           <Route path="/comunicacoes" element={<CommunicationsPage />} />
           <Route path="/comunicacoes/:id" element={<CommunicationDetailPage />} />
           <Route path="/historico" element={<HistoryPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

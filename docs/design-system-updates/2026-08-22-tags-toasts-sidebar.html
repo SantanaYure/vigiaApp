@@ -188,7 +188,7 @@
   <div class="summary">
     <div class="summary-card">
       <div class="n">01</div>
-      <p><strong>Tags</strong> perdem a bolinha e passam a ficar ao lado do horário, à esquerda da linha.</p>
+      <p><strong>Tags</strong> perdem a bolinha e passam a ficar à direita, ao lado da contagem (ex.: segurados) — o horário permanece isolado à esquerda.</p>
     </div>
     <div class="summary-card">
       <div class="n">02</div>
@@ -208,9 +208,9 @@
   <section class="change" id="tags">
     <div class="change-head">
       <span class="change-num">01</span>
-      <h2>Tags: remover a bolinha, alinhar ao horário</h2>
+      <h2>Tags: remover a bolinha, mover para o lado da contagem</h2>
     </div>
-    <p class="change-sub">A bolinha de intensidade era redundante com a cor de fundo + o texto do rótulo — o par cor+texto já comunica o estado sozinho. Onde a tag aparece ao lado de um horário (evento detectado, comunicação gerada), os dois elementos agora formam um grupo único, alinhado à esquerda da linha — o horário deixa de estar "escondido" dentro do texto secundário.</p>
+    <p class="change-sub">A bolinha de intensidade era redundante com a cor de fundo + o texto do rótulo — o par cor+texto já comunica o estado sozinho. Em linhas que combinam horário, título e uma contagem (evento detectado, comunicação gerada), o horário permanece isolado à esquerda, junto do título — e a tag passa a ficar à direita, formando um par com a contagem (ex.: "segurados"), em vez de ficar solta no meio da linha.</p>
 
     <div class="compare">
       <div class="compare-panel">
@@ -231,10 +231,10 @@
       </div>
     </div>
 
-    <div class="compare" style="margin-bottom:24px;">
+    <div class="compare" style="margin-bottom:24px;grid-template-columns:1fr;">
       <div class="compare-panel">
         <div class="compare-label">Antes — linha de evento</div>
-        <div class="compare-body" style="display:block;">
+        <div class="compare-body" style="display:flex;justify-content:space-between;align-items:center;">
           <div class="pv-row" style="gap:14px;">
             <span class="pv-badge" style="background:#FFF0F0;color:#8A2E2E;"><span class="pv-dot" style="background:#C64545;"></span>Crítico</span>
             <div>
@@ -242,20 +242,22 @@
               <div style="font-size:12px;color:#4A5560;">RS · Porto Alegre · 14:02</div>
             </div>
           </div>
+          <span style="font-size:13px;color:#4A5560;">1.248 segurados</span>
         </div>
       </div>
       <div class="compare-panel">
-        <div class="compare-label after">Depois — tag + horário agrupados</div>
-        <div class="compare-body" style="display:block;">
+        <div class="compare-label after">Depois — horário isolado à esquerda, tag junto da contagem à direita</div>
+        <div class="compare-body" style="display:flex;justify-content:space-between;align-items:center;">
           <div class="pv-row" style="gap:14px;">
-            <div class="pv-row" style="gap:8px;">
-              <span class="pv-badge" style="background:#FFF0F0;color:#8A2E2E;">Crítico</span>
-              <span class="pv-time">14:02</span>
-            </div>
+            <span class="pv-time">14:02</span>
             <div>
               <div style="font-size:14px;font-weight:600;">Chuva intensa</div>
               <div style="font-size:12px;color:#4A5560;">RS · Porto Alegre</div>
             </div>
+          </div>
+          <div class="pv-row" style="gap:8px;">
+            <span class="pv-badge" style="background:#FFF0F0;color:#8A2E2E;">Crítico</span>
+            <span style="font-size:13px;color:#4A5560;">1.248 segurados</span>
           </div>
         </div>
       </div>
@@ -279,7 +281,7 @@
           <tr><td class="sec">#risk-badge</td><td class="note">4 badges (Baixo/Moderado/Alto/Crítico) — remover o <code>&lt;span&gt;</code> de bolinha de cada um.</td></tr>
           <tr><td class="sec">#notification-status</td><td class="note">4 badges (Preparada/Revisada/Simulada/Erro) — mesma remoção.</td></tr>
           <tr><td class="sec">#monitoring-status</td><td class="note">Remover a bolinha das 3 pílulas de estado; a pílula "Atualizando" perde também o spinner circular — ver observação abaixo.</td></tr>
-          <tr><td class="sec">#weather-card</td><td class="note">Remover a bolinha do badge de severidade e mover "Detectado às 14:02" para o lado do badge, no topo do card (hoje fica numa linha própria abaixo).</td></tr>
+          <tr><td class="sec">#weather-card</td><td class="note">Remover a bolinha do badge de severidade. A posição não muda — o badge já fica no canto superior direito do card, separado do horário ("Detectado às 14:02"), que continua na sua própria linha.</td></tr>
           <tr><td class="sec">#data-display</td><td class="note">Coluna "Severidade" da tabela de exemplo — mesma remoção de bolinha nos 3 badges.</td></tr>
         </tbody>
       </table>
@@ -398,7 +400,7 @@
     <p class="change-sub">As mudanças 01 e 03 já foram aplicadas no app React (branch <code>feature/design-tweaks-tags-toasts-sidebar</code>) — use estes arquivos como referência de comportamento real, não só a especificação acima.</p>
     <div class="ref-list">
       <div class="ref-row"><span class="path">src/design-system/StatusPill.tsx</span><span class="what">tag sem bolinha (badge e pílula)</span></div>
-      <div class="ref-row"><span class="path">src/features/dashboard/components/AttentionEventRow.tsx</span><span class="what">tag agrupada com o horário</span></div>
+      <div class="ref-row"><span class="path">src/features/dashboard/components/AttentionEventRow.tsx</span><span class="what">horário à esquerda, tag junto da contagem à direita</span></div>
       <div class="ref-row"><span class="path">src/components/layout/Sidebar.module.css</span><span class="what">nav azul-marinho, sem borda</span></div>
     </div>
   </section>

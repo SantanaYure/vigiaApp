@@ -1258,6 +1258,7 @@ git commit -m "feat: add design-system tokens and primitives (StatusPill, Panel,
 - Create: `src/mocks/events.ts`
 - Create: `src/mocks/communications.ts`
 - Create: `src/mocks/monitoringStatus.ts`
+- Create: `src/services/simulateDelay.ts`
 - Create: `src/services/eventsService.ts`
 - Create: `src/services/eventsService.test.ts`
 - Create: `src/services/communicationsService.ts`
@@ -1271,7 +1272,7 @@ git commit -m "feat: add design-system tokens and primitives (StatusPill, Panel,
 
 **Interfaces:**
 - Consumes: `SemanticTone`, `tonePalette` from `design-system/tokens.ts` (Task 2).
-- Produces: `WeatherEvent`, `Severity`, `EventStatus` (types/event.ts); `Communication`, `CommunicationWithEvent`, `CommunicationChannel`, `CommunicationStatus` (types/communication.ts); `MonitoringState`, `MonitoringStatus` (types/monitoring.ts); `getActiveEvents(): Promise<WeatherEvent[]>` (eventsService.ts); `getAllCommunications(): Promise<CommunicationWithEvent[]>` (communicationsService.ts); `getMonitoringStatus(): Promise<MonitoringStatus>` (monitoringService.ts); `severityTone`, `communicationStatusTone`, `monitoringTone` (statusTone.ts); `useAsyncData<T>(loader: () => Promise<T>, deps: unknown[]): { data: T | null; loading: boolean; error: Error | null; reload: () => Promise<void> }` (hooks/useAsyncData.ts); `useMonitoringStatus(): MonitoringStatus` (hooks/useMonitoringStatus.ts). Task 4 consumes `useMonitoringStatus` + `monitoringTone`. Task 5 consumes everything else here.
+- Produces: `WeatherEvent`, `Severity`, `EventStatus` (types/event.ts); `Communication`, `CommunicationWithEvent`, `CommunicationChannel`, `CommunicationStatus` (types/communication.ts); `MonitoringState`, `MonitoringStatus` (types/monitoring.ts); `simulateDelay<T>(value: T): Promise<T>` (services/simulateDelay.ts); `getActiveEvents(): Promise<WeatherEvent[]>` (eventsService.ts); `getAllCommunications(): Promise<CommunicationWithEvent[]>` (communicationsService.ts); `getMonitoringStatus(): Promise<MonitoringStatus>` (monitoringService.ts); `severityTone`, `communicationStatusTone`, `monitoringTone` (statusTone.ts); `useAsyncData<T>(loader: () => Promise<T>, deps: unknown[]): { data: T | null; loading: boolean; error: Error | null; reload: () => Promise<void> }` (hooks/useAsyncData.ts); `useMonitoringStatus(): MonitoringStatus` (hooks/useMonitoringStatus.ts). Task 4 consumes `useMonitoringStatus` + `monitoringTone`. Task 5 consumes everything else here.
 
 - [ ] **Step 1: Create `src/types/event.ts`**
 
@@ -1407,6 +1408,16 @@ export const monitoringStatusMock: MonitoringStatus = {
 };
 ```
 
+- [ ] **Step 6b: Create `src/services/simulateDelay.ts`** — shared artificial-latency helper, used by every service that reads a mock so real network behavior (loading states, races) is exercised without duplicating this helper per file.
+
+```ts
+const SIMULATED_LATENCY_MS = 350;
+
+export function simulateDelay<T>(value: T): Promise<T> {
+  return new Promise((resolve) => setTimeout(() => resolve(value), SIMULATED_LATENCY_MS));
+}
+```
+
 - [ ] **Step 7: Write the failing test for `eventsService` — `src/services/eventsService.test.ts`**
 
 ```ts
@@ -1432,19 +1443,14 @@ npx vitest run src/services/eventsService.test.ts
 ```ts
 import { eventsMock } from "../mocks/events";
 import type { WeatherEvent } from "../types/event";
-
-const SIMULATED_LATENCY_MS = 350;
-
-function delay<T>(value: T): Promise<T> {
-  return new Promise((resolve) => setTimeout(() => resolve(value), SIMULATED_LATENCY_MS));
-}
+import { simulateDelay } from "./simulateDelay";
 
 function listActiveEvents(): WeatherEvent[] {
   return eventsMock.filter((event) => event.status !== "Encerrado");
 }
 
 export async function getActiveEvents(): Promise<WeatherEvent[]> {
-  return delay(listActiveEvents());
+  return simulateDelay(listActiveEvents());
 }
 ```
 
@@ -1483,12 +1489,7 @@ npx vitest run src/services/communicationsService.test.ts
 import { communicationsMock } from "../mocks/communications";
 import { eventsMock } from "../mocks/events";
 import type { Communication, CommunicationWithEvent } from "../types/communication";
-
-const SIMULATED_LATENCY_MS = 350;
-
-function delay<T>(value: T): Promise<T> {
-  return new Promise((resolve) => setTimeout(() => resolve(value), SIMULATED_LATENCY_MS));
-}
+import { simulateDelay } from "./simulateDelay";
 
 function withEventoTipo(communication: Communication): CommunicationWithEvent {
   const event = eventsMock.find((e) => e.id === communication.eventId);
@@ -1500,7 +1501,7 @@ function listAllCommunications(): CommunicationWithEvent[] {
 }
 
 export async function getAllCommunications(): Promise<CommunicationWithEvent[]> {
-  return delay(listAllCommunications());
+  return simulateDelay(listAllCommunications());
 }
 ```
 

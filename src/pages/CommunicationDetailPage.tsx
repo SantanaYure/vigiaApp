@@ -1,9 +1,14 @@
+import { PageHeader } from "../components/layout/PageHeader";
+import { EmptyState } from "../design-system/EmptyState";
+
 export function CommunicationDetailPage() {
   return (
     <div>
-      <h1>Detalhe da comunicação</h1>
-      <p>Conteúdo e status da comunicação selecionada</p>
-      <p>Tela em construção — será implementada em um próximo ciclo.</p>
+      <PageHeader title="Detalhe da comunicação" subtitle="Conteúdo e status da comunicação selecionada" />
+      <EmptyState
+        title="Tela em construção"
+        description="O detalhe da comunicação será implementado em um próximo ciclo."
+      />
     </div>
   );
 }

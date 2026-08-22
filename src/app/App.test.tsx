@@ -14,12 +14,13 @@ describe("App shell navigation", () => {
     expect(await screen.findByRole("heading", { name: "Dashboard" })).toBeInTheDocument();
   });
 
-  it("navigates to the Eventos placeholder when its nav link is clicked", async () => {
+  it("navigates to the Eventos placeholder and shows the monitoring status pill", async () => {
     const user = userEvent.setup();
     render(<App />);
 
     await user.click(screen.getByRole("link", { name: "Eventos" }));
 
     expect(await screen.findByRole("heading", { name: "Eventos climáticos" })).toBeInTheDocument();
+    expect(await screen.findByText("Monitoramento ativo")).toBeInTheDocument();
   });
 });

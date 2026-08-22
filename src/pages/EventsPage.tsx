@@ -1,9 +1,14 @@
+import { PageHeader } from "../components/layout/PageHeader";
+import { EmptyState } from "../design-system/EmptyState";
+
 export function EventsPage() {
   return (
     <div>
-      <h1>Eventos climáticos</h1>
-      <p>Acompanhe os eventos detectados e seu impacto nos segurados</p>
-      <p>Tela em construção — será implementada em um próximo ciclo.</p>
+      <PageHeader title="Eventos climáticos" subtitle="Acompanhe os eventos detectados e seu impacto nos segurados" />
+      <EmptyState
+        title="Tela em construção"
+        description="A lista de eventos climáticos será implementada em um próximo ciclo."
+      />
     </div>
   );
 }

@@ -1,7 +1,6 @@
 .badge {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
   padding: 3px 9px;
   border-radius: var(--radius-sm);
   font-size: 12px;
@@ -12,45 +11,8 @@
 .pill {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
   padding: 6px 12px;
   border-radius: var(--radius-pill);
   font-size: 13px;
   font-weight: 600;
-}
-
-.dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  display: inline-block;
-  flex-shrink: 0;
-}
-
-.dotLarge {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  display: inline-block;
-  flex-shrink: 0;
-}
-
-.dotSpin {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(15, 15, 15, 0.15);
-  border-top-color: currentColor;
-  display: inline-block;
-  flex-shrink: 0;
-  animation: vg-spin 0.8s linear infinite;
-}
-
-@keyframes vg-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }

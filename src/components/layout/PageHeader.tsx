@@ -18,12 +18,7 @@ export function PageHeader({ title, subtitle }: PageHeaderProps) {
         <p className={styles.subtitle}>{subtitle}</p>
       </div>
       <div className={styles.statusGroup}>
-        <StatusPill
-          tone={monitoringTone(monitoring.state)}
-          label={monitoring.label}
-          spin={monitoring.state === "atualizando"}
-          variant="pill"
-        />
+        <StatusPill tone={monitoringTone(monitoring.state)} label={monitoring.label} variant="pill" />
         <span className={styles.lastUpdate}>{monitoring.lastUpdateLabel}</span>
       </div>
     </header>

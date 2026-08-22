@@ -1,8 +1,7 @@
 .sidebar {
   width: var(--sidebar-width);
   flex-shrink: 0;
-  background: var(--color-surface);
-  border-right: 1px solid var(--color-border);
+  background: var(--color-primary-dark);
   padding: var(--space-5) var(--space-3);
   position: sticky;
   top: 0;
@@ -27,7 +26,7 @@
 .brandName {
   font-size: 18px;
   font-weight: 700;
-  color: var(--color-primary-dark);
+  color: var(--color-surface);
 }
 
 .navList {
@@ -43,17 +42,18 @@
   border-radius: var(--radius-sm);
   font-size: 14px;
   font-weight: 500;
-  color: var(--color-text-secondary);
+  color: rgba(255, 255, 255, 0.68);
   text-decoration: none;
 }
 
 .navLink:hover {
-  background: var(--color-surface-muted);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-surface);
 }
 
 .navLinkActive {
-  background: rgba(0, 74, 117, 0.08);
-  color: var(--color-primary-dark);
+  background: rgba(42, 238, 239, 0.14);
+  color: var(--color-primary);
   font-weight: 600;
 }
 
@@ -62,8 +62,6 @@
     width: 100%;
     height: auto;
     position: static;
-    border-right: none;
-    border-bottom: 1px solid var(--color-border);
   }
 
   .navList {

@@ -10,11 +10,10 @@ describe("StatusPill", () => {
     expect(pill.style.backgroundColor).toBe("rgb(255, 240, 240)");
   });
 
-  it("renders a spinning dot when spin is true", () => {
-    render(<StatusPill tone="info" label="Atualizando" spin />);
+  it("renders as a flat pill with no decorative dot", () => {
+    render(<StatusPill tone="success" label="Simulada" variant="pill" />);
 
-    const dot = screen.getByText("Atualizando").querySelector("span");
-    const className = dot?.className || "";
-    expect(className).toMatch(/dotSpin/);
+    const pill = screen.getByText("Simulada");
+    expect(pill.querySelector("span")).toBeNull();
   });
 });

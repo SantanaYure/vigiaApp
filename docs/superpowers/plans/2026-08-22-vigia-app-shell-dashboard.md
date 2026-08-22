@@ -940,7 +940,7 @@ export function Panel({ children, padded = false, style }: PropsWithChildren<Pan
 }
 
 .padded {
-  padding: 16px;
+  padding: var(--space-4);
 }
 ```
 
@@ -993,7 +993,7 @@ export function StatCard({ label, value }: StatCardProps) {
 
 ```css
 .card {
-  padding: 16px;
+  padding: var(--space-4);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-surface);
@@ -1002,7 +1002,7 @@ export function StatCard({ label, value }: StatCardProps) {
 .label {
   font-size: 12px;
   color: var(--color-text-secondary);
-  margin: 0 0 4px;
+  margin: 0 0 var(--space-1);
 }
 
 .value {
@@ -1066,7 +1066,7 @@ export function EmptyState({ title, description }: EmptyStateProps) {
 
 ```css
 .container {
-  padding: 32px;
+  padding: var(--space-8);
   text-align: center;
   border: 1px dashed var(--color-border);
   border-radius: var(--radius-md);
@@ -1075,7 +1075,7 @@ export function EmptyState({ title, description }: EmptyStateProps) {
 .title {
   font-size: 14px;
   font-weight: 600;
-  margin: 0 0 4px;
+  margin: 0 0 var(--space-1);
 }
 
 .description {
@@ -1165,10 +1165,10 @@ export function AlertBanner({ tone = "danger", title, description, action }: Ale
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  padding: 14px 16px;
+  padding: 14px var(--space-4);
   border-radius: var(--radius-md);
   border: 1px solid;
-  margin-bottom: 24px;
+  margin-bottom: var(--space-6);
 }
 
 .dot {
@@ -1176,7 +1176,7 @@ export function AlertBanner({ tone = "danger", title, description, action }: Ale
   height: 8px;
   border-radius: 50%;
   flex-shrink: 0;
-  margin-top: 4px;
+  margin-top: var(--space-1);
 }
 
 .textGroup {
@@ -1834,15 +1834,15 @@ export function PageHeader({ title, subtitle }: PageHeaderProps) {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 16px;
-  margin-bottom: 28px;
+  gap: var(--space-4);
+  margin-bottom: var(--space-7);
   flex-wrap: wrap;
 }
 
 .title {
   font-size: 26px;
   font-weight: 600;
-  margin: 0 0 4px;
+  margin: 0 0 var(--space-1);
 }
 
 .subtitle {
@@ -2158,8 +2158,8 @@ export function AttentionEventRow({ event }: AttentionEventRowProps) {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 14px 16px;
+  gap: var(--space-3);
+  padding: 14px var(--space-4);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-surface);
@@ -2237,8 +2237,8 @@ export function RecentCommunicationRow({ communication }: RecentCommunicationRow
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 12px 16px;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
   border-bottom: 1px solid var(--color-border-subtle);
 }
 
@@ -2419,25 +2419,25 @@ export function DashboardPage() {
 .skeletonGroup {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-bottom: 28px;
+  gap: var(--space-2);
+  margin-bottom: var(--space-7);
 }
 
 .kpiGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-bottom: 28px;
+  gap: var(--space-4);
+  margin-bottom: var(--space-7);
 }
 
 .section {
-  margin-bottom: 28px;
+  margin-bottom: var(--space-7);
 }
 
 .sectionTitle {
   font-size: 16px;
   font-weight: 600;
-  margin: 0 0 12px;
+  margin: 0 0 var(--space-3);
 }
 
 .attentionList {
@@ -2453,7 +2453,7 @@ export function DashboardPage() {
 }
 
 .retryButton {
-  padding: 6px 12px;
+  padding: 6px var(--space-3);
   border-radius: var(--radius-sm);
   border: 1.5px solid currentColor;
   background: transparent;

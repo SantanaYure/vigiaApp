@@ -1,0 +1,411 @@
+<title>Atualização do Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F2F2F2;
+    --surface: #FFFFFF;
+    --surface-2: #FAFBFB;
+    --text: #0F0F0F;
+    --text-2: #4A5560;
+    --text-3: #8B9297;
+    --border: #D8DBDD;
+    --border-2: #EEF0F0;
+    --accent: #2AEEEF;
+    --accent-dark: #004A75;
+    --accent-wash: rgba(42,238,239,0.12);
+
+    --danger-bg:#FFF0F0; --danger-text:#8A2E2E; --danger-dot:#C64545;
+    --warning-bg:#FFFEEA; --warning-text:#6B6B14; --warning-dot:#9B9B1E;
+    --success-bg:#F0FFF0; --success-text:#1E6B1E; --success-dot:#2E8A2E;
+    --info-bg:#F0F2FF; --info-text:#2B3C7D; --info-dot:#3B4E9C;
+    --neutral-bg:#F7F8F8; --neutral-text:#4A5560; --neutral-dot:#8B9297;
+
+    --shadow: 0 1px 3px rgba(15,15,15,0.06);
+    --diff-add: #1E6B1E;
+    --diff-del: #B33B3B;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0A2338;
+      --surface: #0F2E48;
+      --surface-2: #0C2740;
+      --text: #F2F2F2;
+      --text-2: rgba(242,242,242,0.72);
+      --text-3: rgba(242,242,242,0.5);
+      --border: rgba(255,255,255,0.14);
+      --border-2: rgba(255,255,255,0.09);
+      --accent: #2AEEEF;
+      --accent-dark: #7FE9EA;
+      --accent-wash: rgba(42,238,239,0.16);
+      --shadow: 0 1px 3px rgba(0,0,0,0.3);
+      --diff-add: #7FE9A0;
+      --diff-del: #FF9E9E;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #0A2338;
+    --surface: #0F2E48;
+    --surface-2: #0C2740;
+    --text: #F2F2F2;
+    --text-2: rgba(242,242,242,0.72);
+    --text-3: rgba(242,242,242,0.5);
+    --border: rgba(255,255,255,0.14);
+    --border-2: rgba(255,255,255,0.09);
+    --accent: #2AEEEF;
+    --accent-dark: #7FE9EA;
+    --accent-wash: rgba(42,238,239,0.16);
+    --shadow: 0 1px 3px rgba(0,0,0,0.3);
+    --diff-add: #7FE9A0;
+    --diff-del: #FF9E9E;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  code, .mono { font-family: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace; }
+
+  .wrap { max-width: 840px; margin: 0 auto; padding: 0 24px 96px; }
+
+  /* ---- masthead ---- */
+  .masthead { padding: 40px 0 32px; border-bottom: 1px solid var(--border); margin-bottom: 40px; }
+  .brand { display: flex; align-items: center; gap: 8px; margin-bottom: 22px; }
+  .brand-dot { width: 11px; height: 11px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px var(--accent-wash); flex-shrink: 0; }
+  .brand-name { font-size: 15px; font-weight: 700; color: var(--accent-dark); letter-spacing: 0.01em; }
+  .brand-tag { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text-3); margin-left: 2px; }
+
+  h1 { font-size: 30px; font-weight: 600; line-height: 1.2; margin: 0 0 10px; text-wrap: balance; }
+  .lede { font-size: 15px; color: var(--text-2); max-width: 62ch; margin: 0 0 22px; }
+
+  .meta { display: flex; flex-wrap: wrap; gap: 10px 28px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--text-3); margin: 0; padding: 0; }
+  .meta-item { display: flex; gap: 6px; }
+  .meta-item b { color: var(--text-2); font-weight: 500; }
+
+  /* ---- summary checklist ---- */
+  .summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 56px; }
+  .summary-card { border: 1px solid var(--border); border-radius: 8px; background: var(--surface); padding: 14px 16px; }
+  .summary-card .n { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--accent-dark); font-weight: 600; margin-bottom: 6px; }
+  .summary-card p { margin: 0; font-size: 13px; color: var(--text-2); line-height: 1.45; }
+  .summary-card strong { color: var(--text); }
+  .summary-card.note { background: var(--accent-wash); border-color: transparent; }
+
+  /* ---- sections ---- */
+  section.change { margin-bottom: 64px; }
+  .change-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 6px; }
+  .change-num { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--accent-dark); font-weight: 600; }
+  .change-head h2 { font-size: 21px; font-weight: 600; margin: 0; }
+  .change-sub { margin: 0 0 24px; font-size: 14px; color: var(--text-2); max-width: 64ch; }
+
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .compare-panel { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: var(--surface); }
+  .compare-label { display: flex; align-items: center; justify-content: space-between; padding: 8px 14px; border-bottom: 1px solid var(--border-2); font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.03em; text-transform: uppercase; color: var(--text-3); }
+  .compare-label.after { color: var(--success-text); }
+  .compare-body { padding: 20px 16px; background: #FFFFFF; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; min-height: 64px; }
+
+  /* live component previews — always rendered in Vigia's real light palette,
+     since these represent the literal product UI, not this document's theme */
+  .pv-badge { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; border-radius: 4px; font-size: 12px; font-weight: 600; white-space: nowrap; font-family: 'IBM Plex Sans', sans-serif; }
+  .pv-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+  .pv-pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; font-family: 'IBM Plex Sans', sans-serif; }
+  .pv-row { display: flex; align-items: center; gap: 8px; font-family: 'IBM Plex Sans', sans-serif; }
+  .pv-time { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #4A5560; }
+  .pv-toast { display: inline-flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; font-family: 'IBM Plex Sans', sans-serif; box-shadow: 0 4px 12px rgba(15,15,15,0.15); }
+
+  pre.code { margin: 0 0 8px; padding: 14px 16px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.6; }
+  pre.code code { color: var(--text-2); white-space: pre; }
+  pre.code .del { color: var(--diff-del); text-decoration: line-through; opacity: 0.75; }
+  pre.code .add { color: var(--diff-add); }
+
+  .file-ref { font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: var(--text-3); margin: 0 0 20px; }
+  .file-ref b { color: var(--text-2); font-weight: 500; }
+
+  .locations { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 8px; }
+  .locations table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .locations th { text-align: left; padding: 9px 14px; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-3); background: var(--surface-2); border-bottom: 1px solid var(--border); }
+  .locations td { padding: 9px 14px; border-bottom: 1px solid var(--border-2); vertical-align: top; }
+  .locations tr:last-child td { border-bottom: none; }
+  .locations td.sec { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--accent-dark); white-space: nowrap; }
+  .locations td.note { color: var(--text-2); font-size: 12.5px; }
+
+  .callout { display: flex; gap: 10px; padding: 12px 14px; border-radius: 8px; background: var(--surface); border: 1px solid var(--border); font-size: 13px; color: var(--text-2); margin: 20px 0 0; }
+  .callout .mark { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: var(--accent-dark); flex-shrink: 0; padding-top: 1px; }
+
+  /* sidebar preview for change 3 */
+  .side-preview { display: flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 20px; }
+  .side-preview-nav { width: 200px; flex-shrink: 0; background: #004A75; padding: 18px 12px; font-family: 'IBM Plex Sans', sans-serif; }
+  .side-preview-brand { display: flex; align-items: center; gap: 7px; padding: 2px 8px 16px; }
+  .side-preview-brand .d { width: 10px; height: 10px; border-radius: 50%; background: #2AEEEF; box-shadow: 0 0 0 3px rgba(42,238,239,0.25); }
+  .side-preview-brand span { font-size: 15px; font-weight: 700; color: #FFFFFF; }
+  .side-link { display: block; padding: 8px 10px; margin-bottom: 2px; border-radius: 4px; font-size: 13px; font-weight: 500; }
+  .side-link.active { background: rgba(42,238,239,0.14); color: #2AEEEF; font-weight: 600; }
+  .side-link.idle { color: rgba(255,255,255,0.68); }
+  .side-preview-content { flex: 1; background: #F2F2F2; padding: 18px 20px; font-size: 12px; color: #8B9297; display: flex; align-items: center; justify-content: center; text-align: center; }
+
+  /* ---- reference section ---- */
+  .ref-list { border: 1px solid var(--border); border-radius: 8px; background: var(--surface); }
+  .ref-row { display: flex; justify-content: space-between; gap: 16px; padding: 11px 16px; border-bottom: 1px solid var(--border-2); font-size: 13px; }
+  .ref-row:last-child { border-bottom: none; }
+  .ref-row .path { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--text); }
+  .ref-row .what { color: var(--text-3); font-size: 12px; text-align: right; flex-shrink: 0; }
+
+  footer.close { border-top: 1px solid var(--border); padding-top: 24px; margin-top: 8px; font-size: 12.5px; color: var(--text-3); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+
+  @media (max-width: 640px) {
+    .summary { grid-template-columns: 1fr 1fr; }
+    .compare { grid-template-columns: 1fr; }
+    .side-preview { flex-direction: column; }
+    .side-preview-nav { width: 100%; }
+  }
+</style>
+
+<div class="wrap">
+
+  <div class="masthead">
+    <div class="brand">
+      <span class="brand-dot"></span>
+      <span class="brand-name">Vigia</span>
+      <span class="brand-tag">Design System · Atualização proposta</span>
+    </div>
+    <h1>Atualização do Design System</h1>
+    <p class="lede">Três mudanças visuais identificadas na revisão do Dashboard — tags e toasts sem indicador de bolinha, tag reposicionada ao lado do horário, e uma barra lateral em azul mais escuro — traduzidas em instruções diretas para aplicar em <code>Vigia Design System.dc.html</code> no Claude Design.</p>
+    <div class="meta">
+      <div class="meta-item"><b>Arquivo alvo</b> Vigia Design System.dc.html</div>
+      <div class="meta-item"><b>Projeto</b> Claude Design · 68394959-2fed-4fc5-82eb-cff5f37ae36d</div>
+      <div class="meta-item"><b>Origem</b> Revisão do Dashboard (App Shell)</div>
+      <div class="meta-item"><b>Versão sugerida</b> v1.0 → v1.1</div>
+    </div>
+  </div>
+
+  <div class="summary">
+    <div class="summary-card">
+      <div class="n">01</div>
+      <p><strong>Tags</strong> perdem a bolinha e passam a ficar ao lado do horário, à esquerda da linha.</p>
+    </div>
+    <div class="summary-card">
+      <div class="n">02</div>
+      <p><strong>Toasts</strong> perdem a bolinha e usam a cor do tom da notificação, em vez de um fundo escuro fixo.</p>
+    </div>
+    <div class="summary-card">
+      <div class="n">03</div>
+      <p><strong>Barra lateral</strong> passa a azul-marinho escuro, itens em azul claro, sem borda grossa.</p>
+    </div>
+    <div class="summary-card note">
+      <div class="n">Nota</div>
+      <p>Toast ainda não existe no app React — mudança 02 é só especificação, para quando a tela de Comunicações for construída.</p>
+    </div>
+  </div>
+
+  <!-- ============ CHANGE 1 — TAGS ============ -->
+  <section class="change" id="tags">
+    <div class="change-head">
+      <span class="change-num">01</span>
+      <h2>Tags: remover a bolinha, alinhar ao horário</h2>
+    </div>
+    <p class="change-sub">A bolinha de intensidade era redundante com a cor de fundo + o texto do rótulo — o par cor+texto já comunica o estado sozinho. Onde a tag aparece ao lado de um horário (evento detectado, comunicação gerada), os dois elementos agora formam um grupo único, alinhado à esquerda da linha — o horário deixa de estar "escondido" dentro do texto secundário.</p>
+
+    <div class="compare">
+      <div class="compare-panel">
+        <div class="compare-label">Antes</div>
+        <div class="compare-body">
+          <span class="pv-badge" style="background:#FFF0F0;color:#8A2E2E;"><span class="pv-dot" style="background:#C64545;"></span>Crítico</span>
+          <span class="pv-badge" style="background:#FFFEEA;color:#6B6B14;"><span class="pv-dot" style="background:#9B9B1E;"></span>Alto</span>
+          <span class="pv-badge" style="background:#F0FFF0;color:#1E6B1E;"><span class="pv-dot" style="background:#2E8A2E;"></span>Moderado</span>
+        </div>
+      </div>
+      <div class="compare-panel">
+        <div class="compare-label after">Depois</div>
+        <div class="compare-body">
+          <span class="pv-badge" style="background:#FFF0F0;color:#8A2E2E;">Crítico</span>
+          <span class="pv-badge" style="background:#FFFEEA;color:#6B6B14;">Alto</span>
+          <span class="pv-badge" style="background:#F0FFF0;color:#1E6B1E;">Moderado</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="compare" style="margin-bottom:24px;">
+      <div class="compare-panel">
+        <div class="compare-label">Antes — linha de evento</div>
+        <div class="compare-body" style="display:block;">
+          <div class="pv-row" style="gap:14px;">
+            <span class="pv-badge" style="background:#FFF0F0;color:#8A2E2E;"><span class="pv-dot" style="background:#C64545;"></span>Crítico</span>
+            <div>
+              <div style="font-size:14px;font-weight:600;">Chuva intensa</div>
+              <div style="font-size:12px;color:#4A5560;">RS · Porto Alegre · 14:02</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="compare-panel">
+        <div class="compare-label after">Depois — tag + horário agrupados</div>
+        <div class="compare-body" style="display:block;">
+          <div class="pv-row" style="gap:14px;">
+            <div class="pv-row" style="gap:8px;">
+              <span class="pv-badge" style="background:#FFF0F0;color:#8A2E2E;">Crítico</span>
+              <span class="pv-time">14:02</span>
+            </div>
+            <div>
+              <div style="font-size:14px;font-weight:600;">Chuva intensa</div>
+              <div style="font-size:12px;color:#4A5560;">RS · Porto Alegre</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="file-ref"><b>Novo padrão de marcação</b> — substitui todo <code>&lt;span&gt;</code> de bolinha dentro de uma tag:</p>
+    <pre class="code"><code><span class="del">&lt;span style="...gap:6px..."&gt;
+  &lt;span style="width:6px;height:6px;border-radius:50%;background:#C64545;"&gt;&lt;/span&gt;
+  Crítico
+&lt;/span&gt;</span>
+
+<span class="add">&lt;span style="display:inline-flex;align-items:center;padding:3px 9px;border-radius:4px;background:#FFF0F0;color:#8A2E2E;font-size:12px;font-weight:600;"&gt;
+  Crítico
+&lt;/span&gt;</span></code></pre>
+
+    <p class="file-ref"><b>Onde aplicar dentro de <code>Vigia Design System.dc.html</code></b></p>
+    <div class="locations">
+      <table>
+        <thead><tr><th>Seção</th><th>O que mudar</th></tr></thead>
+        <tbody>
+          <tr><td class="sec">#risk-badge</td><td class="note">4 badges (Baixo/Moderado/Alto/Crítico) — remover o <code>&lt;span&gt;</code> de bolinha de cada um.</td></tr>
+          <tr><td class="sec">#notification-status</td><td class="note">4 badges (Preparada/Revisada/Simulada/Erro) — mesma remoção.</td></tr>
+          <tr><td class="sec">#monitoring-status</td><td class="note">Remover a bolinha das 3 pílulas de estado; a pílula "Atualizando" perde também o spinner circular — ver observação abaixo.</td></tr>
+          <tr><td class="sec">#weather-card</td><td class="note">Remover a bolinha do badge de severidade e mover "Detectado às 14:02" para o lado do badge, no topo do card (hoje fica numa linha própria abaixo).</td></tr>
+          <tr><td class="sec">#data-display</td><td class="note">Coluna "Severidade" da tabela de exemplo — mesma remoção de bolinha nos 3 badges.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <span class="mark">Obs.</span>
+      <span>A pílula "Atualizando" (#monitoring-status) usa a bolinha também como spinner de carregamento, não só decoração. Sem a bolinha, esse estado perde a única pista de "processando" — a implementação em React resolveu isso simplesmente removendo o spinner (o rótulo de texto já muda para "Atualizando"); se quiser manter uma pista visual de progresso na peça do Design System, considere um indicador separado (ex.: preenchimento progressivo do fundo da pílula) em vez de reintroduzir a bolinha.</span>
+    </div>
+  </section>
+
+  <!-- ============ CHANGE 2 — TOAST ============ -->
+  <section class="change" id="toast">
+    <div class="change-head">
+      <span class="change-num">02</span>
+      <h2>Toast: cor pelo tom da notificação, sem bolinha</h2>
+    </div>
+    <p class="change-sub">Hoje existe um único toast, sempre com fundo escuro fixo (<code>#0F0F0F</code>) e uma bolinha colorida indicando o tipo. A bolinha se torna redundante assim que o toast usa a cor do próprio tom da notificação — o fundo e o texto já contam a história.</p>
+
+    <div class="compare">
+      <div class="compare-panel">
+        <div class="compare-label">Antes — sempre escuro</div>
+        <div class="compare-body">
+          <span class="pv-toast" style="background:#0F0F0F;color:#FFFFFF;">
+            <span class="pv-dot" style="background:#91FF8A;"></span>
+            Comunicação salva
+          </span>
+        </div>
+      </div>
+      <div class="compare-panel">
+        <div class="compare-label after">Depois — cor por tom</div>
+        <div class="compare-body" style="flex-direction:column;align-items:flex-start;gap:8px;">
+          <span class="pv-toast" style="background:#1E6B1E;color:#F0FFF0;">Comunicação salva</span>
+          <span class="pv-toast" style="background:#8A2E2E;color:#FFF0F0;">Falha ao enviar comunicação</span>
+          <span class="pv-toast" style="background:#6B6B14;color:#FFFEEA;">3 comunicações aguardando revisão</span>
+          <span class="pv-toast" style="background:#2B3C7D;color:#F0F2FF;">Regra aplicada automaticamente</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="file-ref"><b>Mapeamento de tom → toast</b> — usa os mesmos tokens semânticos já definidos em <code>#colors</code>, invertendo texto/fundo (fundo = cor <em>text</em> do tom, texto = cor <em>bg</em> do tom, para manter contraste alto sem herdar o preto fixo):</p>
+    <div class="locations">
+      <table>
+        <thead><tr><th>Tom</th><th>Fundo do toast</th><th>Texto do toast</th></tr></thead>
+        <tbody>
+          <tr><td class="note">Sucesso</td><td class="sec">#1E6B1E</td><td class="sec">#F0FFF0</td></tr>
+          <tr><td class="note">Aviso</td><td class="sec">#6B6B14</td><td class="sec">#FFFEEA</td></tr>
+          <tr><td class="note">Erro</td><td class="sec">#8A2E2E</td><td class="sec">#FFF0F0</td></tr>
+          <tr><td class="note">Info</td><td class="sec">#2B3C7D</td><td class="sec">#F0F2FF</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="file-ref" style="margin-top:16px;"><b>Novo padrão de marcação</b> — substitui o toast único da seção <code>#feedback</code>:</p>
+    <pre class="code"><code><span class="del">&lt;div style="...background:#0F0F0F;color:#FFFFFF;..."&gt;
+  &lt;div style="...border-radius:50%;background:#91FF8A;"&gt;&lt;/div&gt;
+  Toast · Comunicação salva
+&lt;/div&gt;</span>
+
+<span class="add">&lt;div style="padding:14px 16px;border-radius:8px;background:#1E6B1E;color:#F0FFF0;font-size:13px;font-weight:500;box-shadow:0 4px 12px rgba(15,15,15,0.15);"&gt;
+  Comunicação salva
+&lt;/div&gt;</span></code></pre>
+
+    <div class="callout">
+      <span class="mark">Escopo</span>
+      <span>O componente Toast ainda não foi implementado no app React — a tela de Comunicações, onde ele aparece após "Simular envio", está fora do ciclo atual (só o Dashboard foi construído). Esta seção é só a especificação para quando esse componente for implementado; nenhum código foi alterado para isso.</span>
+    </div>
+  </section>
+
+  <!-- ============ CHANGE 3 — SIDEBAR ============ -->
+  <section class="change" id="sidebar">
+    <div class="change-head">
+      <span class="change-num">03</span>
+      <h2>Barra lateral: azul-marinho escuro, sem borda</h2>
+    </div>
+    <p class="change-sub">A navegação era branca com um filete de borda à direita. Passa a usar o Azul Dark da marca (<code>#004A75</code>) como fundo — o mesmo tom já usado em títulos e elementos institucionais — com os itens de menu seguindo a lógica do Primary Cyan (<code>#2AEEEF</code>) para o estado ativo. A separação entre navegação e conteúdo vem do contraste de cor, não de uma borda: nada de borda grossa como "assinatura" de IA.</p>
+
+    <div class="side-preview">
+      <div class="side-preview-nav">
+        <div class="side-preview-brand"><span class="d"></span><span>Vigia</span></div>
+        <div class="side-link active">Dashboard</div>
+        <div class="side-link idle">Eventos</div>
+        <div class="side-link idle">Comunicações</div>
+        <div class="side-link idle">Histórico</div>
+      </div>
+      <div class="side-preview-content">contraste de cor separa nav de conteúdo — nenhuma borda entre os dois</div>
+    </div>
+
+    <div class="locations">
+      <table>
+        <thead><tr><th>Elemento</th><th>De</th><th>Para</th></tr></thead>
+        <tbody>
+          <tr><td class="note">Fundo da nav</td><td class="sec">#FFFFFF</td><td class="sec">#004A75</td></tr>
+          <tr><td class="note">Borda direita</td><td class="sec">1px solid #D8DBDD</td><td class="sec">removida</td></tr>
+          <tr><td class="note">Nome da marca</td><td class="sec">#004A75</td><td class="sec">#FFFFFF</td></tr>
+          <tr><td class="note">Item ativo — texto</td><td class="sec">#004A75</td><td class="sec">#2AEEEF</td></tr>
+          <tr><td class="note">Item ativo — fundo</td><td class="sec">rgba(0,74,117,0.08)</td><td class="sec">rgba(42,238,239,0.14)</td></tr>
+          <tr><td class="note">Item inativo — texto</td><td class="sec">#4A5560</td><td class="sec">rgba(255,255,255,0.68)</td></tr>
+          <tr><td class="note">Item em hover</td><td class="sec">fundo #F7F8F8</td><td class="sec">fundo rgba(255,255,255,0.08), texto #FFFFFF</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <span class="mark">Novo</span>
+      <span>A navegação lateral ainda não tem seção própria em <code>Vigia Design System.dc.html</code> — hoje ela só existe implícita no <code>&lt;nav&gt;</code> do protótipo. Vale criar uma seção <b>"Navegação"</b> no grupo <b>Componentes</b> do índice, documentando este padrão junto com os cinco tokens da tabela acima, para não depender só do protótipo como referência.</span>
+    </div>
+  </section>
+
+  <!-- ============ REFERENCE ============ -->
+  <section class="change" style="margin-bottom:40px;">
+    <div class="change-head">
+      <span class="change-num">Ref.</span>
+      <h2>Implementação já em produção</h2>
+    </div>
+    <p class="change-sub">As mudanças 01 e 03 já foram aplicadas no app React (branch <code>feature/design-tweaks-tags-toasts-sidebar</code>) — use estes arquivos como referência de comportamento real, não só a especificação acima.</p>
+    <div class="ref-list">
+      <div class="ref-row"><span class="path">src/design-system/StatusPill.tsx</span><span class="what">tag sem bolinha (badge e pílula)</span></div>
+      <div class="ref-row"><span class="path">src/features/dashboard/components/AttentionEventRow.tsx</span><span class="what">tag agrupada com o horário</span></div>
+      <div class="ref-row"><span class="path">src/components/layout/Sidebar.module.css</span><span class="what">nav azul-marinho, sem borda</span></div>
+    </div>
+  </section>
+
+  <footer class="close">
+    <span>Vigia · Design System</span>
+    <span>Preparado a partir da revisão do Dashboard · 22 ago 2026</span>
+  </footer>
+
+</div>

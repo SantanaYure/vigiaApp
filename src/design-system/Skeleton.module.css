@@ -1,0 +1,4 @@
+.block {
+  border-radius: 4px;
+  background: var(--color-skeleton);
+}

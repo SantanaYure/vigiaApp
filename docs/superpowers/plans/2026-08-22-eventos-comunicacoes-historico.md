@@ -1249,7 +1249,7 @@ git commit -m "feat: add shared MessageEditorCard and useMessageEditor for the e
 - Create: `src/features/events/components/EventDetailPanel.module.css`
 - Create: `src/features/events/components/EventDetailPanel.test.tsx`
 - Modify (full rewrite): `src/pages/EventsPage.tsx`
-- Create: `src/pages/EventsPage.module.css`
+- Create: `src/pages/listDetailPage.module.css` — shared CSS partial for the filters/list/detail-panel/skeleton/retry/confirm-modal-text classes; Task 5's `CommunicationsPage` imports this exact same file rather than getting its own copy, since that page's layout shell is pixel-identical (only the list/detail content differs, and that content lives in each page's own feature components, not in this shell CSS)
 - Create: `src/pages/EventsPage.test.tsx`
 - Modify: `src/design-system/index.css` — add the shared `vg-fade` keyframe used by both detail panels
 - Modify: `src/app/App.tsx` — `/eventos/:id` renders `EventsPage`, not `EventDetailPage`
@@ -1257,6 +1257,7 @@ git commit -m "feat: add shared MessageEditorCard and useMessageEditor for the e
 
 **Interfaces:**
 - Consumes: `useAsyncData` (`hooks/useAsyncData.ts`); `getAllEvents` (`services/eventsService.ts`, Task 1); `getAllCommunications` (`services/communicationsService.ts`, Task 1); `getCustomersForEvent` (`services/customersService.ts`, Task 1); `StatusPill`, `Panel`, `EmptyState`, `AlertBanner`, `Skeleton`, `Modal`, `Toast` (`design-system/`); `severityTone` (`design-system/statusTone.ts`); `PageHeader` (`components/layout/PageHeader.tsx`); `MessageEditorCard`, `useMessageEditor` (`features/communications/`, Task 3); `WeatherEvent` (`types/event.ts`); `CommunicationWithEvent` (`types/communication.ts`); `Customer` (`types/customer.ts`).
+- Produces (in addition to the page itself): `src/pages/listDetailPage.module.css` with exactly these class names — `.filters`, `.search`, `.select`, `.layout`, `.listColumn`, `.list`, `.skeletonGroup`, `.retryButton`, `.confirmIntro`, `.confirmSummary` — Task 5 imports this file by exact relative path (`../pages/listDetailPage.module.css` is wrong; both pages live in the same `src/pages/` directory, so Task 5 uses `./listDetailPage.module.css`, identical to how this task uses it) and must not create its own copy.
 - Produces: `EventsPageData { events: WeatherEvent[]; communicationsByEventId: Record<string, CommunicationWithEvent> }` and `useEventsPageData()` returning the standard `useAsyncData` shape over it; `EventRow({ event, isSelected })`; `EventDetailPanel({ event, communication, customers, messageEditor })` where `messageEditor` is exactly what `useMessageEditor` returns. Nothing outside this task consumes these.
 
 **Note on visual fidelity (read before Step 1):** the prototype's own Eventos list row places the severity badge *before* the title, with the segurados count alone on the right (`badge → title/region-status → … → count`). That is the *old* layout — the tag-position correction already applied to `AttentionEventRow` (and written into the published Design System update) established the badge belongs paired with the count on the right for every row that shows a count. `EventRow` follows that already-corrected pattern, not the prototype's original ordering — the two other things about the row (bold title, secondary `{regiao} · {status}` line, border/radius/hover) still come straight from the prototype. This is applying an already-approved correction consistently, not a new reinterpretation.
@@ -1841,7 +1842,7 @@ import { useAsyncData } from "../hooks/useAsyncData";
 import { getCustomersForEvent } from "../services/customersService";
 import type { Customer } from "../types/customer";
 import type { Severity } from "../types/event";
-import styles from "./EventsPage.module.css";
+import styles from "./listDetailPage.module.css";
 
 const SEVERITY_OPTIONS: { value: Severity | "todas"; label: string }[] = [
   { value: "todas", label: "Todas as severidades" },
@@ -1976,7 +1977,7 @@ export function EventsPage() {
 }
 ```
 
-- [ ] **Step 16: Create `src/pages/EventsPage.module.css`**
+- [ ] **Step 16: Create `src/pages/listDetailPage.module.css`** — this is a shared partial, not page-specific: Task 5's `CommunicationsPage` imports this exact file too, since its list/filter/detail-panel shell is pixel-identical to this one (only the row/panel content differs, and that lives in each feature's own components). Do not name it `EventsPage.module.css` and do not duplicate these rules into a second file later.
 
 ```css
 .filters {
@@ -2133,13 +2134,14 @@ git commit -m "feat: implement Eventos screen (list, filters, detail panel, simu
 - Create: `src/features/communications/components/CommunicationDetailPanel.module.css`
 - Create: `src/features/communications/components/CommunicationDetailPanel.test.tsx`
 - Modify (full rewrite): `src/pages/CommunicationsPage.tsx`
-- Create: `src/pages/CommunicationsPage.module.css`
 - Create: `src/pages/CommunicationsPage.test.tsx`
 - Modify: `src/app/App.tsx` — `/comunicacoes/:id` renders `CommunicationsPage`, not `CommunicationDetailPage`
 - Delete: `src/pages/CommunicationDetailPage.tsx`
 
+**Do not create a `CommunicationsPage.module.css` file.** This page's filters/list/detail-panel shell is pixel-identical to `EventsPage`'s, and Task 4 already created the shared partial for it — `CommunicationsPage.tsx` imports `./listDetailPage.module.css`, the same file `EventsPage.tsx` imports. Creating a second copy of those rules is exactly the kind of duplication this plan calls out as a defect elsewhere (see the Global Constraints on repeated literals) — the shell styling has zero page-specific differences, so there is nothing to put in a second file.
+
 **Interfaces:**
-- Consumes: everything Task 4 consumed, plus `MessageEditorCard`, `useMessageEditor` (Task 3, already built — this task is the second and last consumer); `getAllEvents` (Task 1, already used by Task 4 too).
+- Consumes: everything Task 4 consumed, plus `MessageEditorCard`, `useMessageEditor` (Task 3, already built — this task is the second and last consumer); `getAllEvents` (Task 1, already used by Task 4 too); `src/pages/listDetailPage.module.css` (Task 4 — reused as-is, not recreated).
 - Produces: `CommunicationsPageData { communications: CommunicationWithEvent[]; eventsById: Record<string, WeatherEvent> }` and `useCommunicationsPageData()`; `CommunicationRow({ communication, isSelected })`; `CommunicationDetailPanel({ communication, event, messageEditor })`. Nothing outside this task consumes these.
 
 **Note on visual fidelity:** the prototype's Comunicações detail panel actually lays out its message section slightly differently from the Eventos one (label + status pill inline above a plain text block, buttons in a separate footer strip) rather than as one bordered sub-card. The approved spec explicitly calls for reusing `MessageEditorCard` — the *same* bordered sub-card — in both detail panels, which is a deliberate, already-approved unification, not a new reinterpretation. Implement it exactly as `MessageEditorCard` already renders; do not add a second, separately-styled message block to try to match the prototype's Comunicações-specific markup more closely.
@@ -2617,7 +2619,7 @@ import { CommunicationRow } from "../features/communications/components/Communic
 import { useCommunicationsPageData } from "../features/communications/useCommunicationsPageData";
 import { useMessageEditor } from "../features/communications/useMessageEditor";
 import type { CommunicationStatus } from "../types/communication";
-import styles from "./CommunicationsPage.module.css";
+import styles from "./listDetailPage.module.css";
 
 const STATUS_OPTIONS: { value: CommunicationStatus | "todos"; label: string }[] = [
   { value: "todos", label: "Todos os status" },
@@ -2753,86 +2755,7 @@ export function CommunicationsPage() {
 }
 ```
 
-- [ ] **Step 15: Create `src/pages/CommunicationsPage.module.css`**
-
-```css
-.filters {
-  display: flex;
-  gap: var(--space-3);
-  margin-bottom: 18px;
-}
-
-.search {
-  flex: 1;
-  max-width: 320px;
-  padding: 9px var(--space-3);
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--color-border);
-  font-size: 14px;
-  box-sizing: border-box;
-}
-
-.select {
-  padding: 9px var(--space-3);
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--color-border);
-  font-size: 14px;
-  background: var(--color-surface);
-}
-
-.layout {
-  display: flex;
-  gap: var(--space-5);
-  align-items: flex-start;
-}
-
-.listColumn {
-  flex: 1;
-  min-width: 0;
-}
-
-.list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.skeletonGroup {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  margin-bottom: var(--space-7);
-}
-
-.retryButton {
-  padding: 6px var(--space-3);
-  border-radius: var(--radius-sm);
-  border: 1.5px solid currentColor;
-  background: transparent;
-  color: inherit;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.confirmIntro {
-  margin: 0 0 10px;
-  color: var(--color-text-secondary);
-}
-
-.confirmSummary {
-  margin: 0;
-  color: var(--color-text);
-}
-
-@media (max-width: 1024px) {
-  .layout {
-    flex-direction: column;
-  }
-}
-```
-
-- [ ] **Step 16: Run the test to verify it passes**
+- [ ] **Step 15: Run the test to verify it passes** — no new CSS file needed for this step; `CommunicationsPage.tsx` already imports the shared `./listDetailPage.module.css` created in Task 4, Step 16
 
 ```bash
 npx vitest run src/pages/CommunicationsPage.test.tsx
@@ -2840,7 +2763,7 @@ npx vitest run src/pages/CommunicationsPage.test.tsx
 
 Expected: PASS (6 tests).
 
-- [ ] **Step 17: Point `/comunicacoes/:id` at `CommunicationsPage` in `src/app/App.tsx`** — remove the `CommunicationDetailPage` import and its route:
+- [ ] **Step 16: Point `/comunicacoes/:id` at `CommunicationsPage` in `src/app/App.tsx`** — remove the `CommunicationDetailPage` import and its route:
 
 ```tsx
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -2870,7 +2793,7 @@ export function App() {
 }
 ```
 
-- [ ] **Step 18: Delete the now-unused detail page**
+- [ ] **Step 17: Delete the now-unused detail page**
 
 ```bash
 rm src/pages/CommunicationDetailPage.tsx
@@ -2878,7 +2801,7 @@ rm src/pages/CommunicationDetailPage.tsx
 
 Also update `src/app/App.test.tsx` if it references `/comunicacoes/:id` expecting the old placeholder text — check the file; if its assertions only cover `/` and `/eventos`, no change is needed there.
 
-- [ ] **Step 19: Run the full test suite, typecheck, lint, and build**
+- [ ] **Step 18: Run the full test suite, typecheck, lint, and build**
 
 ```bash
 npm run typecheck
@@ -2889,7 +2812,7 @@ npm run build
 
 Expected: all four pass.
 
-- [ ] **Step 20: Commit**
+- [ ] **Step 19: Commit**
 
 ```bash
 git add -A

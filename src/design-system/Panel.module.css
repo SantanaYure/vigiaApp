@@ -6,5 +6,5 @@
 }
 
 .padded {
-  padding: 16px;
+  padding: var(--space-4);
 }

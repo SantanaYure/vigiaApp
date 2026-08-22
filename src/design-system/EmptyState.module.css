@@ -1,5 +1,5 @@
 .container {
-  padding: 32px;
+  padding: var(--space-8);
   text-align: center;
   border: 1px dashed var(--color-border);
   border-radius: var(--radius-md);
@@ -8,7 +8,7 @@
 .title {
   font-size: 14px;
   font-weight: 600;
-  margin: 0 0 4px;
+  margin: 0 0 var(--space-1);
 }
 
 .description {

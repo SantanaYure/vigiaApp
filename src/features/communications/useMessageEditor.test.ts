@@ -89,4 +89,47 @@ describe("useMessageEditor", () => {
     expect(result.current.isEditing).toBe(false);
     expect(result.current.isConfirmOpen).toBe(false);
   });
+
+  it("clears text immediately when switching from one communication to another, before the new text loads", async () => {
+    const { result, rerender } = renderHook(({ id }) => useMessageEditor(id, vi.fn()), {
+      initialProps: { id: "c1" as string | null },
+    });
+    await waitFor(() => expect(result.current.text).not.toBe(""));
+
+    rerender({ id: "c2" });
+
+    expect(result.current.text).toBe("");
+  });
+
+  it("discards a regenerate result if the selected communication changes before it resolves", async () => {
+    const { result, rerender } = renderHook(({ id }) => useMessageEditor(id, vi.fn()), {
+      initialProps: { id: "c1" as string | null },
+    });
+    await waitFor(() => expect(result.current.text).not.toBe(""));
+
+    let resolveRegenerate: () => void = () => {};
+    vi.spyOn(communicationsService, "regenerateCommunicationText").mockReturnValueOnce(
+      new Promise<void>((resolve) => {
+        resolveRegenerate = resolve;
+      }),
+    );
+
+    act(() => {
+      result.current.onRegenerate();
+    });
+
+    // Switch selection while the regenerate call is still in flight.
+    rerender({ id: "c2" });
+    await waitFor(() => expect(result.current.text).not.toBe(""));
+    const c2Text = result.current.text;
+
+    await act(async () => {
+      resolveRegenerate();
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    // c1's regenerated text must not have overwritten c2's displayed text.
+    expect(result.current.text).toBe(c2Text);
+  });
 });

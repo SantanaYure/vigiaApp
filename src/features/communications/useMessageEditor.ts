@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   getCommunicationText,
   regenerateCommunicationText,
@@ -13,13 +13,23 @@ export function useMessageEditor(communicationId: string | null, onSimulated: ()
   const [isEditing, setIsEditing] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  // Kept in sync every render (not in an effect) so in-flight async handlers
+  // below can tell, after an `await`, whether the selection has since moved
+  // on to a different communication and their result should be discarded.
+  const currentIdRef = useRef(communicationId);
+  currentIdRef.current = communicationId;
+  const toastTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     setIsEditing(false);
     setIsConfirmOpen(false);
+    // Clear immediately on every id change (not only to null) — otherwise the
+    // previous communication's text stays on screen for the ~350ms it takes
+    // the new one to load, which reads as a mismatch against the header
+    // (channel/status), which updates immediately from the parent's data.
+    setText("");
 
     if (!communicationId) {
-      setText("");
       return;
     }
 
@@ -31,6 +41,12 @@ export function useMessageEditor(communicationId: string | null, onSimulated: ()
       active = false;
     };
   }, [communicationId]);
+
+  useEffect(() => {
+    return () => {
+      if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
+    };
+  }, []);
 
   function onTextChange(value: string) {
     setText(value);
@@ -45,9 +61,12 @@ export function useMessageEditor(communicationId: string | null, onSimulated: ()
 
   async function onRegenerate() {
     if (!communicationId) return;
-    await regenerateCommunicationText(communicationId);
-    const value = await getCommunicationText(communicationId);
-    setText(value);
+    const requestId = communicationId;
+    await regenerateCommunicationText(requestId);
+    const value = await getCommunicationText(requestId);
+    if (currentIdRef.current === requestId) {
+      setText(value);
+    }
   }
 
   function onRequestSimulate() {
@@ -60,11 +79,16 @@ export function useMessageEditor(communicationId: string | null, onSimulated: ()
 
   async function onConfirmSimulate() {
     if (!communicationId) return;
-    await simulateCommunicationSend(communicationId);
+    const requestId = communicationId;
+    await simulateCommunicationSend(requestId);
     setIsConfirmOpen(false);
-    setToastMessage("Envio simulado com sucesso");
     onSimulated();
-    setTimeout(() => setToastMessage(null), TOAST_DURATION_MS);
+
+    if (currentIdRef.current === requestId) {
+      if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
+      setToastMessage("Envio simulado com sucesso");
+      toastTimeoutRef.current = setTimeout(() => setToastMessage(null), TOAST_DURATION_MS);
+    }
   }
 
   return {

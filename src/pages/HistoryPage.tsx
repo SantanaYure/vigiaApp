@@ -8,6 +8,7 @@ import { StatusPill } from "../design-system/StatusPill";
 import { communicationStatusTone } from "../design-system/statusTone";
 import { useHistoryData } from "../features/history/useHistoryData";
 import type { CommunicationStatus } from "../types/communication";
+import sharedStyles from "./listDetailPage.module.css";
 import styles from "./HistoryPage.module.css";
 
 const STATUS_OPTIONS: { value: CommunicationStatus | "todos"; label: string }[] = [
@@ -29,7 +30,7 @@ export function HistoryPage() {
       <PageHeader title="Histórico" subtitle="Registro de eventos, comunicações e simulações de envio" />
 
       {loading && !data ? (
-        <div className={styles.skeletonGroup}>
+        <div className={sharedStyles.skeletonGroup}>
           <Skeleton height={40} />
           <Skeleton height={160} />
         </div>
@@ -40,7 +41,7 @@ export function HistoryPage() {
           title="Não foi possível carregar o histórico"
           description="Tente novamente em alguns instantes."
           action={
-            <button type="button" className={styles.retryButton} onClick={reload}>
+            <button type="button" className={sharedStyles.retryButton} onClick={reload}>
               Tentar novamente
             </button>
           }
@@ -49,9 +50,9 @@ export function HistoryPage() {
 
       {data ? (
         <>
-          <div className={styles.filters}>
+          <div className={sharedStyles.filters}>
             <select
-              className={styles.select}
+              className={sharedStyles.select}
               value={statusFilter}
               onChange={(event) => setStatusFilter(event.target.value as CommunicationStatus | "todos")}
               aria-label="Filtrar por status"

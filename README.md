@@ -1,4 +1,14 @@
-# React + Vite
+# Vigia
+
+Monitoramento climático proativo para seguradoras (Grupo VIL) — React + Vite + TypeScript.
+
+## Estrutura do repositório
+
+- `src/` — aplicação Vigia (produto).
+- `agents/` — pipeline de agentes (Desafio 5 InsurMinds): coleta de dados meteorológicos, identificação de eventos, regras de negócio, geração de comunicações. Ver [`agents/README.md`](agents/README.md).
+- `docs/` — documentação de produto: specs, planos, arquitetura.
+
+## React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 

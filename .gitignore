@@ -13,6 +13,12 @@ dist-ssr
 *.local
 .worktrees
 
+# Agentes Python
+agents/coleta/output/
+__pycache__/
+*.pyc
+.env
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

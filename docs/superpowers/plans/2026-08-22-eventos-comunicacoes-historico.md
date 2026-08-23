@@ -2007,6 +2007,7 @@ export function EventsPage() {
 ```css
 .filters {
   display: flex;
+  flex-wrap: wrap;
   gap: var(--space-3);
   margin-bottom: 18px;
 }

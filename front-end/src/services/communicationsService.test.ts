@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import {
   getAllCommunications,
   getCommunicationById,
@@ -8,6 +8,14 @@ import {
   updateCommunicationText,
 } from "./communicationsService";
 import { getHistory } from "./historyService";
+import * as eventsService from "./eventsService";
+import { regenerarMensagem } from "./messageBackend";
+
+vi.mock("./messageBackend", () => ({
+  regenerarMensagem: vi.fn().mockResolvedValue(null),
+}));
+
+vi.spyOn(eventsService, "getAllEvents").mockResolvedValue([]);
 
 describe("communicationsService", () => {
   it("getAllCommunications starts empty — no real communication source exists yet", async () => {
@@ -28,11 +36,22 @@ describe("communicationsService", () => {
     expect(await getCommunicationText("c-any")).toBe("Texto editado manualmente.");
   });
 
-  it("regenerateCommunicationText is a no-op — no real generation exists yet", async () => {
+  it("regenerateCommunicationText asks the backend, and keeps the text unchanged when it's unreachable", async () => {
     await updateCommunicationText("c-regen", "Texto original.");
+
     await regenerateCommunicationText("c-regen");
 
+    expect(regenerarMensagem).toHaveBeenCalledOnce();
     expect(await getCommunicationText("c-regen")).toBe("Texto original.");
+  });
+
+  it("regenerateCommunicationText applies the text the backend returns", async () => {
+    vi.mocked(regenerarMensagem).mockResolvedValueOnce("Texto vindo do backend.");
+    await updateCommunicationText("c-regen-2", "Texto original.");
+
+    await regenerateCommunicationText("c-regen-2");
+
+    expect(await getCommunicationText("c-regen-2")).toBe("Texto vindo do backend.");
   });
 
   it("simulateCommunicationSend on an unknown id does nothing and appends no history", async () => {

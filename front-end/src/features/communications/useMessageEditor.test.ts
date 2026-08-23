@@ -3,9 +3,17 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { useMessageEditor } from "./useMessageEditor";
 import * as communicationsService from "../../services/communicationsService";
 import { updateCommunicationText } from "../../services/communicationsService";
+import * as eventsService from "../../services/eventsService";
+import * as messageBackend from "../../services/messageBackend";
+
+vi.mock("../../services/messageBackend", () => ({
+  regenerarMensagem: vi.fn(),
+}));
 
 describe("useMessageEditor", () => {
   beforeEach(async () => {
+    vi.spyOn(eventsService, "getAllEvents").mockResolvedValue([]);
+    vi.mocked(messageBackend.regenerarMensagem).mockResolvedValue(null);
     await updateCommunicationText("c1", "Texto c1");
     await updateCommunicationText("c2", "Texto c2");
     await updateCommunicationText("c3", "Texto c3");
@@ -29,7 +37,20 @@ describe("useMessageEditor", () => {
     await waitFor(async () => expect(await communicationsService.getCommunicationText("c3")).toBe("Novo texto"));
   });
 
-  it("onRegenerate is a no-op today (no real IA de geração ainda) but still resolves and keeps the current text", async () => {
+  it("onRegenerate replaces the text with what the backend returns", async () => {
+    vi.mocked(messageBackend.regenerarMensagem).mockResolvedValueOnce("Texto regenerado pelo backend");
+    const { result } = renderHook(() => useMessageEditor("c3", vi.fn()));
+    await waitFor(() => expect(result.current.text).toBe("Texto c3"));
+
+    await act(async () => {
+      await result.current.onRegenerate();
+    });
+
+    expect(result.current.text).toBe("Texto regenerado pelo backend");
+  });
+
+  it("onRegenerate keeps the current text when the backend is unreachable", async () => {
+    vi.mocked(messageBackend.regenerarMensagem).mockResolvedValueOnce(null);
     const { result } = renderHook(() => useMessageEditor("c3", vi.fn()));
     await waitFor(() => expect(result.current.text).toBe("Texto c3"));
 
@@ -105,6 +126,10 @@ describe("useMessageEditor", () => {
   it("discards a regenerate result if the selected communication changes before it resolves", async () => {
     vi.useFakeTimers();
     try {
+      vi.mocked(messageBackend.regenerarMensagem).mockImplementation(
+        () => new Promise((resolve) => setTimeout(() => resolve("Texto regenerado (atrasado)"), 350)),
+      );
+
       const { result, rerender } = renderHook(({ id }) => useMessageEditor(id, vi.fn()), {
         initialProps: { id: "c1" as string | null },
       });
@@ -117,7 +142,7 @@ describe("useMessageEditor", () => {
         result.current.onRegenerate();
       });
 
-      // Switch selection before onRegenerate's own service calls (each ~350ms) resolve.
+      // Switch selection before onRegenerate's own async chain resolves.
       rerender({ id: "c2" });
       await act(async () => {
         await vi.advanceTimersByTimeAsync(350);
@@ -126,7 +151,7 @@ describe("useMessageEditor", () => {
 
       // Let onRegenerate's remaining in-flight calls for c1 finish.
       await act(async () => {
-        await vi.advanceTimersByTimeAsync(1000);
+        await vi.advanceTimersByTimeAsync(2000);
       });
 
       expect(result.current.text).toBe("Texto c2");

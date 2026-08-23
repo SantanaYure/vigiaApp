@@ -5,7 +5,7 @@ from __future__ import annotations
 import unittest
 from datetime import datetime, timezone
 
-from agents.coleta.normalizer import normalizar_avisos
+from agent.coleta.normalizer import normalizar_avisos
 
 AMOSTRA_BRUTA = {
     "hoje": [

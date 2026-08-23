@@ -2,8 +2,8 @@
 e imprime (ou salva) o resultado.
 
 Uso:
-    python -m agents.coleta.run
-    python -m agents.coleta.run --out agents/coleta/output/avisos.json
+    python -m agent.coleta.run
+    python -m agent.coleta.run --out agent/coleta/output/avisos.json
 """
 
 from __future__ import annotations
@@ -15,8 +15,8 @@ from dataclasses import asdict
 from datetime import datetime
 from pathlib import Path
 
-from agents.coleta.inmet_client import ColetaError, buscar_avisos_ativos
-from agents.coleta.normalizer import normalizar_avisos
+from agent.coleta.inmet_client import ColetaError, buscar_avisos_ativos
+from agent.coleta.normalizer import normalizar_avisos
 
 
 def _json_default(valor: object) -> str:

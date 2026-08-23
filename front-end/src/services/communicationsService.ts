@@ -1,4 +1,5 @@
 import { getAllEvents } from "./eventsService";
+import { regenerarMensagem } from "./messageBackend";
 import type { Communication, CommunicationWithEvent } from "../types/communication";
 import type { HistoryEntry } from "../types/history";
 import { appendHistoryEntry } from "./historyService";
@@ -47,11 +48,31 @@ export async function updateCommunicationText(id: string, text: string): Promise
 }
 
 /**
- * Regeneração via IA ainda não está implementada (depende da Pessoa 3 e de
- * uma integração real de LLM). Por enquanto não há nenhuma alternativa de
- * texto para aplicar.
+ * Pede ao backend um novo texto para a comunicação. O backend ainda devolve
+ * um stub (geração real via IA depende da Pessoa 3), mas a chamada em si é
+ * real. Se o backend não responder, o texto atual é mantido — nunca falha
+ * de forma visível para quem está editando.
+ *
+ * Não depende de a comunicação já estar em `communicationsStore` — usa o
+ * evento associado quando existe, com fallback honesto quando não. Isso
+ * mantém a integração com o backend testável mesmo antes de existir um
+ * fluxo real de criação de comunicações.
  */
-export async function regenerateCommunicationText(_id: string): Promise<void> {
+export async function regenerateCommunicationText(id: string): Promise<void> {
+  const communication = communicationsStore.find((c) => c.id === id);
+  const events = await getAllEvents();
+  const event = communication ? events.find((e) => e.id === communication.eventId) : undefined;
+
+  const texto = await regenerarMensagem({
+    eventoTipo: event?.tipo ?? "Evento desconhecido",
+    severidade: event?.severidade ?? "Baixo",
+    regiao: event?.regiao ?? "região desconhecida",
+  });
+
+  if (texto !== null) {
+    editedTextsStore[id] = texto;
+  }
+
   return simulateDelay(undefined);
 }
 

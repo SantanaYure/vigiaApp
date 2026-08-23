@@ -18,15 +18,15 @@ jobs:
           python-version: "3.12"
 
       - name: Instalar dependências
-        run: pip install -r agents/requirements.txt
+        run: pip install -r agent/requirements.txt
 
       - name: Rodar agente de Coleta
-        run: python -m agents.coleta.run --out public/data/avisos-inmet.json
+        run: python -m agent.coleta.run --out front-end/public/data/avisos-inmet.json
 
       - name: Commitar avisos atualizados, se houver mudança
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add public/data/avisos-inmet.json
+          git add front-end/public/data/avisos-inmet.json
           git diff --cached --quiet || git commit -m "chore: atualizar avisos do INMET [skip ci]"
           git push

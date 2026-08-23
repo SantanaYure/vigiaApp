@@ -13,8 +13,8 @@ dist-ssr
 *.local
 .worktrees
 
-# Agentes Python
-agents/coleta/output/
+# Agente Python
+agent/coleta/output/
 __pycache__/
 *.pyc
 .env

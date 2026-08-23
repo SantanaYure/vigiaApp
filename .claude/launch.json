@@ -4,7 +4,7 @@
     {
       "name": "vigia-dev",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeArgs": ["--prefix", "front-end", "run", "dev"],
       "port": 5173,
       "autoPort": true
     }

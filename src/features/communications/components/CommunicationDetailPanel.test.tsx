@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { CommunicationDetailPanel } from "./CommunicationDetailPanel";
 import type { CommunicationWithEvent } from "../../../types/communication";
@@ -56,6 +56,12 @@ describe("CommunicationDetailPanel", () => {
   it("falls back to the communication's eventoTipo for context when the event isn't loaded yet", () => {
     render(<CommunicationDetailPanel communication={communication} event={null} messageEditor={messageEditor} />);
 
-    expect(screen.getByText("Chuva intensa")).toBeInTheDocument();
+    // Scoped to the "Contexto do risco" section: the header title and this fallback both
+    // render the communication's eventoTipo verbatim when event is null, so an unscoped
+    // getByText would match twice (header + context) and throw.
+    const contextoLabel = screen.getByText("Contexto do risco");
+    const contextoSection = contextoLabel.closest("div");
+    expect(contextoSection).not.toBeNull();
+    expect(within(contextoSection as HTMLElement).getByText("Chuva intensa")).toBeInTheDocument();
   });
 });

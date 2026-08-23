@@ -1,6 +1,6 @@
 name: Coleta INMET
 
-on:
+"on":
   schedule:
     - cron: "*/30 * * * *"
   workflow_dispatch: {}

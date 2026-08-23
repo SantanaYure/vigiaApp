@@ -235,3 +235,151 @@ $ npm run test
  Test Files  19 passed (19)
       Tests  51 passed (51)
 ```
+
+## Fix round 2 — genuinely load-bearing race test
+
+A re-review confirmed the round-1 production fix in `useMessageEditor.ts` (the `currentIdRef`
+guard) is correct by direct inspection, but found that one of the two round-1 regression tests
+didn't actually exercise the bug it claimed to.
+
+### The flaw in the old test
+
+`"discards a regenerate result if the selected communication changes before it resolves"` mocked
+only `communicationsService.regenerateCommunicationText` with a manually-controlled promise. But
+`onRegenerate` does a **second** `await` after that first call resolves — a call to
+`getCommunicationText(requestId)` — which was left unmocked and went through the real
+`simulateDelay` (a genuine ~350ms `setTimeout` in `src/services/simulateDelay.ts`). The test only
+flushed two microtask ticks (`await Promise.resolve()` twice) after resolving the first mock, which
+is nowhere near enough real time for that second, unmocked 350ms timer to fire. So the final
+assertion (`text` still equals `c2`'s text) passed simply because the stale write from `c1` hadn't
+happened *yet* by the time the test checked — not because the `currentIdRef` guard discarded it.
+The exact same assertion would have passed against the pre-round-1, unguarded code, making the test
+vacuous.
+
+### The fix
+
+Replaced the test body to use `vi.useFakeTimers()` / `vi.advanceTimersByTimeAsync()` instead of
+mocking any service function, so the real `simulateDelay`-based timing of both awaits inside
+`onRegenerate` (and of the initial load effect) is driven deterministically under fake-timer
+control — exercising the actual production code path end-to-end rather than a hand-rolled
+substitute for it:
+
+```ts
+it("discards a regenerate result if the selected communication changes before it resolves", async () => {
+  vi.useFakeTimers();
+  try {
+    const { result, rerender } = renderHook(({ id }) => useMessageEditor(id, vi.fn()), {
+      initialProps: { id: "c1" as string | null },
+    });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(350);
+    });
+    expect(result.current.text).not.toBe("");
+
+    act(() => {
+      result.current.onRegenerate();
+    });
+
+    // Switch selection before onRegenerate's own service calls (each ~350ms) resolve.
+    rerender({ id: "c2" });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(350);
+    });
+    const c2Text = result.current.text;
+    expect(c2Text).not.toBe("");
+
+    // Let onRegenerate's remaining in-flight calls for c1 finish.
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(1000);
+    });
+
+    expect(result.current.text).toBe(c2Text);
+  } finally {
+    vi.useRealTimers();
+  }
+});
+```
+
+One deviation from the literal snippet supplied for this round: the three
+`vi.advanceTimersByTimeAsync(...)` calls needed to be wrapped in `await act(async () => { ... })`,
+not called bare. Without the `act` wrapper the test was flaky/failing — `result.current.text` was
+still `""` after advancing 350ms past the initial mount, and React logged "An update ... was not
+wrapped in act(...)". React's effect-driven `setText` calls need the surrounding `act()` to flush
+synchronously before the assertion runs when the update is triggered by a fake-timer advance rather
+than a direct `act(() => ...)` call. With that wrapper added, the test is stable and passes cleanly
+(no act warnings).
+
+The `communicationsService` spy/mock for `regenerateCommunicationText` was removed entirely — this
+version doesn't mock any service function. The `import * as communicationsService from
+"../../services/communicationsService"` at the top of the file was kept, since the
+`"onRequestSimulate opens the confirm state, onCancelSimulate closes it without calling the
+service"` test still uses `vi.spyOn(communicationsService, "simulateCommunicationSend")` and the
+`"onTextChange updates local text immediately and persists it via the service"` test still calls
+`communicationsService.getCommunicationText(...)` directly.
+
+### Verification that the new test is actually load-bearing
+
+Per the round-2 instructions, before considering this done, the `currentIdRef` guard in
+`onRegenerate` (`src/features/communications/useMessageEditor.ts`) was temporarily disabled:
+
+```ts
+async function onRegenerate() {
+  if (!communicationId) return;
+  const requestId = communicationId;
+  await regenerateCommunicationText(requestId);
+  const value = await getCommunicationText(requestId);
+  // TEMP: guard disabled for round-2 verification
+  // if (currentIdRef.current === requestId) {
+    setText(value);
+  // }
+}
+```
+
+Running just this test (`npx vitest run src/features/communications/useMessageEditor.test.ts -t
+"discards a regenerate result"`) with the guard disabled: **FAILED**, as expected —
+
+```
+AssertionError: expected 'Aviso: chuva intensa prevista para su…' to be 'Olá! Detectamos risco de granizo na s…'
+
+Expected: "Olá! Detectamos risco de granizo na sua região..." (c2's real text)
+Received: "Aviso: chuva intensa prevista para sua região..." (c1's stale regenerate alternative)
+```
+
+This confirms the test genuinely detects the race: with the guard removed, `c1`'s regenerated text
+overwrites `c2`'s displayed text, exactly the bug the guard exists to prevent.
+
+The guard was then restored to its original form and the full file re-run: **PASSED** — 8/8 tests,
+confirming the fix didn't regress anything else.
+
+### Final verification (guard restored)
+
+| Command | Result |
+|---|---|
+| `npx vitest run src/features/communications/useMessageEditor.test.ts` | PASS — 8/8 tests |
+| `npm run typecheck` (`tsc --noEmit`) | PASS — no errors, exit 0 |
+| `npm run lint` (`oxlint`) | PASS — exit 0. Same two pre-existing advisory warnings as round 1 (`react(refs)` at line 20, `react(set-state-in-effect)` at line 24 of `useMessageEditor.ts`) — unrelated to this round's test-only change, production code untouched except for the temporary guard-disable/restore during verification. |
+| `npm run test` (full suite) | PASS — 19 test files, 51 tests, 0 failures |
+
+Raw output:
+
+```
+$ npx vitest run src/features/communications/useMessageEditor.test.ts
+ RUN  v4.1.11
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+
+$ npm run typecheck
+> tsc --noEmit
+(no output, exit 0)
+
+$ npm run lint
+> oxlint
+src/features/communications/useMessageEditor.ts:20:15: warning react(refs): Cannot access refs during render
+src/features/communications/useMessageEditor.ts:24:5: warning react(set-state-in-effect): Calling setState synchronously within an effect can trigger cascading renders
+(exit 0)
+
+$ npm run test
+ RUN  v4.1.11
+ Test Files  19 passed (19)
+      Tests  51 passed (51)
+```

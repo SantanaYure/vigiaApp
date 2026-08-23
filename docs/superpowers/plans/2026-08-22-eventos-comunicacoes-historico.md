@@ -2973,6 +2973,7 @@ import { StatusPill } from "../design-system/StatusPill";
 import { communicationStatusTone } from "../design-system/statusTone";
 import { useHistoryData } from "../features/history/useHistoryData";
 import type { CommunicationStatus } from "../types/communication";
+import sharedStyles from "./listDetailPage.module.css";
 import styles from "./HistoryPage.module.css";
 
 const STATUS_OPTIONS: { value: CommunicationStatus | "todos"; label: string }[] = [
@@ -2994,7 +2995,7 @@ export function HistoryPage() {
       <PageHeader title="Histórico" subtitle="Registro de eventos, comunicações e simulações de envio" />
 
       {loading && !data ? (
-        <div className={styles.skeletonGroup}>
+        <div className={sharedStyles.skeletonGroup}>
           <Skeleton height={40} />
           <Skeleton height={160} />
         </div>
@@ -3005,7 +3006,7 @@ export function HistoryPage() {
           title="Não foi possível carregar o histórico"
           description="Tente novamente em alguns instantes."
           action={
-            <button type="button" className={styles.retryButton} onClick={reload}>
+            <button type="button" className={sharedStyles.retryButton} onClick={reload}>
               Tentar novamente
             </button>
           }
@@ -3014,9 +3015,9 @@ export function HistoryPage() {
 
       {data ? (
         <>
-          <div className={styles.filters}>
+          <div className={sharedStyles.filters}>
             <select
-              className={styles.select}
+              className={sharedStyles.select}
               value={statusFilter}
               onChange={(event) => setStatusFilter(event.target.value as CommunicationStatus | "todos")}
               aria-label="Filtrar por status"
@@ -3073,21 +3074,9 @@ export function HistoryPage() {
 }
 ```
 
-- [ ] **Step 8: Create `src/pages/HistoryPage.module.css`**
+- [ ] **Step 8: Create `src/pages/HistoryPage.module.css`** — table-specific classes only; `.filters`/`.select`/`.skeletonGroup`/`.retryButton` are already defined in the shared `listDetailPage.module.css` (Task 4) and imported above as `sharedStyles` — do not redefine them here:
 
 ```css
-.filters {
-  margin-bottom: 18px;
-}
-
-.select {
-  padding: 9px var(--space-3);
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--color-border);
-  font-size: 14px;
-  background: var(--color-surface);
-}
-
 .tableScroll {
   overflow-x: auto;
 }
@@ -3116,24 +3105,6 @@ export function HistoryPage() {
 
 tr:last-child .td {
   border-bottom: none;
-}
-
-.skeletonGroup {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  margin-bottom: var(--space-7);
-}
-
-.retryButton {
-  padding: 6px var(--space-3);
-  border-radius: var(--radius-sm);
-  border: 1.5px solid currentColor;
-  background: transparent;
-  color: inherit;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
 }
 ```
 

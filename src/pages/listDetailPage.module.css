@@ -1,0 +1,74 @@
+.filters {
+  display: flex;
+  gap: var(--space-3);
+  margin-bottom: 18px;
+}
+
+.search {
+  flex: 1;
+  max-width: 320px;
+  padding: 9px var(--space-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.select {
+  padding: 9px var(--space-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  font-size: 14px;
+  background: var(--color-surface);
+}
+
+.layout {
+  display: flex;
+  gap: var(--space-5);
+  align-items: flex-start;
+}
+
+.listColumn {
+  flex: 1;
+  min-width: 0;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.skeletonGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-7);
+}
+
+.retryButton {
+  padding: 6px var(--space-3);
+  border-radius: var(--radius-sm);
+  border: 1.5px solid currentColor;
+  background: transparent;
+  color: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.confirmIntro {
+  margin: 0 0 10px;
+  color: var(--color-text-secondary);
+}
+
+.confirmSummary {
+  margin: 0;
+  color: var(--color-text);
+}
+
+@media (max-width: 1024px) {
+  .layout {
+    flex-direction: column;
+  }
+}

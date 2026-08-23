@@ -1,0 +1,104 @@
+.panel {
+  width: 460px;
+  flex-shrink: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  animation: vg-fade 0.15s ease-out;
+}
+
+.header {
+  padding: var(--space-4) 18px;
+  border-bottom: 1px solid var(--color-border-subtle);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.title {
+  margin: 0 0 2px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.section {
+  padding: var(--space-4) 18px;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.sectionLast {
+  padding: var(--space-4) 18px;
+}
+
+.sectionLabel {
+  margin: 0 0 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+
+.sectionText {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.whyList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.whyLine {
+  margin: 0;
+}
+
+.whyLineMuted {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.whyLineStrong {
+  margin: 0;
+  font-weight: 600;
+}
+
+.customerList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.customerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.customerRow:last-child {
+  border-bottom: none;
+}
+
+.customerName {
+  margin: 0;
+  font-weight: 500;
+}
+
+.customerMeta {
+  margin: 1px 0 0;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}

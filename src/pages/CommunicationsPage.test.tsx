@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
@@ -81,5 +81,14 @@ describe("CommunicationsPage", () => {
     await user.click(screen.getByRole("button", { name: "Confirmar simulação" }));
 
     expect(await screen.findByText("Envio simulado com sucesso")).toBeInTheDocument();
+
+    // Scoped to the message editor card: other rows in the list (e.g. c1) already have
+    // a "Simulada" status pill, so an unscoped query would match more than one element.
+    const simulateButton = await screen.findByRole("button", { name: "Simular envio" });
+    const messageCard = simulateButton.closest("div")?.parentElement;
+    expect(messageCard).not.toBeNull();
+    // The status pill updates after a background reload that starts once the toast is
+    // already showing, so poll for it rather than asserting synchronously.
+    expect(await within(messageCard as HTMLElement).findByText("Simulada")).toBeInTheDocument();
   });
 });

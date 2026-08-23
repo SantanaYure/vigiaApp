@@ -48,9 +48,9 @@ export function EventDetailPanel({ event, communication, customers, messageEdito
 
       <div className={styles.section}>
         <p className={styles.sectionLabel}>Segurados impactados</p>
-        <div className={styles.customerList}>
+        <ul className={styles.customerList}>
           {customers.map((customer) => (
-            <div key={customer.apolice} className={styles.customerRow}>
+            <li key={customer.apolice} className={styles.customerRow}>
               <div>
                 <p className={styles.customerName}>{customer.nome}</p>
                 <p className={styles.customerMeta}>
@@ -61,9 +61,9 @@ export function EventDetailPanel({ event, communication, customers, messageEdito
                 tone={communicationStatusTone(customer.statusComunicacao)}
                 label={customer.statusComunicacao}
               />
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
 
       {communication ? (

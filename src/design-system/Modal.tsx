@@ -17,7 +17,9 @@ export function Modal({ title, children, cancelLabel, onCancel, confirmLabel, on
 
   useEffect(() => {
     cancelButtonRef.current?.focus();
+  }, []);
 
+  useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
         onCancel();

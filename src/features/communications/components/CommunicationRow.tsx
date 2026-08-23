@@ -19,8 +19,7 @@ export function CommunicationRow({ communication, isSelected }: CommunicationRow
         <span className={styles.textGroup}>
           <span className={styles.tipo}>{communication.eventoTipo}</span>
           <span className={styles.meta}>
-            {communication.canal} · {communication.segurados.toLocaleString("pt-BR")} segurados ·{" "}
-            {communication.geradoEm}
+            {communication.canal} · {communication.segurados.toLocaleString("pt-BR")} segurados
           </span>
         </span>
         <StatusPill tone={communicationStatusTone(communication.status)} label={communication.status} />

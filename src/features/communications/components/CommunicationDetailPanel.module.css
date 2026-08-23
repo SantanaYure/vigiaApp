@@ -1,0 +1,67 @@
+.panel {
+  width: 460px;
+  flex-shrink: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  animation: vg-fade 0.15s ease-out;
+}
+
+.header {
+  padding: var(--space-4) 18px;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.title {
+  margin: 0 0 2px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.section {
+  padding: var(--space-4) 18px;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.sectionLabel {
+  margin: 0 0 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+
+.sectionText {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+}
+
+.recipientsRow {
+  padding: var(--space-4) 18px;
+  border-bottom: 1px solid var(--color-border-subtle);
+  display: flex;
+  justify-content: space-between;
+}
+
+.recipientsLabel {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
+.recipientsValue {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.sectionLast {
+  padding: var(--space-4) 18px;
+}

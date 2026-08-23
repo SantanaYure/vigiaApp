@@ -12,4 +12,6 @@ export interface WeatherEvent {
   segurados: number;
   regra: string;
   tipoSeguro: string;
+  /** Códigos IBGE dos municípios afetados. Vazio para eventos sem fonte geográfica real. */
+  geocodesMunicipios: string[];
 }

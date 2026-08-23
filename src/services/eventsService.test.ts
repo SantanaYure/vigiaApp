@@ -1,27 +1,56 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { getActiveEvents, getAllEvents, getEventById } from "./eventsService";
+import { getRealEvents } from "./realEventsSource";
+import type { WeatherEvent } from "../types/event";
+
+vi.mock("./realEventsSource", () => ({
+  getRealEvents: vi.fn(),
+}));
+
+const ATIVO: WeatherEvent = {
+  id: "inmet-1",
+  tipo: "Vendaval",
+  severidade: "Alto",
+  regiao: "CE · 1 município(s)",
+  status: "Ativo",
+  detectadoEm: "22/08 08:00",
+  previsao: "Até 24/08 20:00",
+  segurados: 0,
+  regra: "Regra provisória",
+  tipoSeguro: "cobertura a definir",
+  geocodesMunicipios: ["2300150"],
+};
+
+const ENCERRADO: WeatherEvent = { ...ATIVO, id: "inmet-2", tipo: "Geada", status: "Encerrado" };
 
 describe("eventsService", () => {
-  it("returns only events that are not Encerrado, in mock order", async () => {
+  it("getAllEvents delegates to getRealEvents", async () => {
+    vi.mocked(getRealEvents).mockResolvedValueOnce([ATIVO, ENCERRADO]);
+
+    const events = await getAllEvents();
+
+    expect(events).toEqual([ATIVO, ENCERRADO]);
+  });
+
+  it("getActiveEvents filters out Encerrado events", async () => {
+    vi.mocked(getRealEvents).mockResolvedValueOnce([ATIVO, ENCERRADO]);
+
     const events = await getActiveEvents();
 
-    expect(events.map((event) => event.id)).toEqual(["ev1", "ev2", "ev3"]);
-    expect(events.every((event) => event.status !== "Encerrado")).toBe(true);
+    expect(events.map((event) => event.id)).toEqual(["inmet-1"]);
   });
 
   it("getEventById returns the matching event", async () => {
-    const event = await getEventById("ev2");
-    expect(event).toMatchObject({ id: "ev2", tipo: "Granizo" });
+    vi.mocked(getRealEvents).mockResolvedValueOnce([ATIVO, ENCERRADO]);
+
+    const event = await getEventById("inmet-2");
+    expect(event).toMatchObject({ id: "inmet-2", tipo: "Geada" });
   });
 
   it("getEventById returns null for an unknown id", async () => {
+    vi.mocked(getRealEvents).mockResolvedValueOnce([ATIVO]);
+
     const event = await getEventById("does-not-exist");
     expect(event).toBeNull();
-  });
-
-  it("getAllEvents returns every event, including Encerrado ones", async () => {
-    const events = await getAllEvents();
-    expect(events).toHaveLength(4);
-    expect(events.map((e) => e.status)).toContain("Encerrado");
   });
 });

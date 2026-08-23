@@ -1,8 +1,8 @@
-import { historySeed } from "../mocks/history";
 import type { HistoryEntry } from "../types/history";
 import { simulateDelay } from "./simulateDelay";
 
-let historyStore: HistoryEntry[] = [...historySeed];
+/** Não há fonte real de histórico ainda — entradas só existem quando `appendHistoryEntry` as cria. */
+let historyStore: HistoryEntry[] = [];
 
 export async function getHistory(): Promise<HistoryEntry[]> {
   return simulateDelay(historyStore);

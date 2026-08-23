@@ -1,22 +1,25 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { useMessageEditor } from "./useMessageEditor";
 import * as communicationsService from "../../services/communicationsService";
+import { updateCommunicationText } from "../../services/communicationsService";
 
 describe("useMessageEditor", () => {
+  beforeEach(async () => {
+    await updateCommunicationText("c1", "Texto c1");
+    await updateCommunicationText("c2", "Texto c2");
+    await updateCommunicationText("c3", "Texto c3");
+  });
+
   it("loads the current text for the given communication id", async () => {
     const { result } = renderHook(() => useMessageEditor("c3", vi.fn()));
 
-    await waitFor(() =>
-      expect(result.current.text).toBe(
-        "Olá! Identificamos ventos fortes em sua região. Recomendamos verificar itens soltos em áreas externas, como móveis e objetos de jardim.",
-      ),
-    );
+    await waitFor(() => expect(result.current.text).toBe("Texto c3"));
   });
 
   it("onTextChange updates local text immediately and persists it via the service", async () => {
     const { result } = renderHook(() => useMessageEditor("c3", vi.fn()));
-    await waitFor(() => expect(result.current.text).not.toBe(""));
+    await waitFor(() => expect(result.current.text).toBe("Texto c3"));
 
     act(() => {
       result.current.onTextChange("Novo texto");
@@ -26,17 +29,15 @@ describe("useMessageEditor", () => {
     await waitFor(async () => expect(await communicationsService.getCommunicationText("c3")).toBe("Novo texto"));
   });
 
-  it("onRegenerate replaces the text with the service's regenerated alternative", async () => {
-    const { result } = renderHook(() => useMessageEditor("c4", vi.fn()));
-    await waitFor(() => expect(result.current.text).not.toBe(""));
+  it("onRegenerate is a no-op today (no real IA de geração ainda) but still resolves and keeps the current text", async () => {
+    const { result } = renderHook(() => useMessageEditor("c3", vi.fn()));
+    await waitFor(() => expect(result.current.text).toBe("Texto c3"));
 
     await act(async () => {
       await result.current.onRegenerate();
     });
 
-    expect(result.current.text).toBe(
-      "Registramos chuva intensa em sua região. Caso identifique qualquer dano na sua residência, acesse o app para abrir um sinistro.",
-    );
+    expect(result.current.text).toBe("Texto c3");
   });
 
   it("onRequestSimulate opens the confirm state, onCancelSimulate closes it without calling the service", async () => {
@@ -94,7 +95,7 @@ describe("useMessageEditor", () => {
     const { result, rerender } = renderHook(({ id }) => useMessageEditor(id, vi.fn()), {
       initialProps: { id: "c1" as string | null },
     });
-    await waitFor(() => expect(result.current.text).not.toBe(""));
+    await waitFor(() => expect(result.current.text).toBe("Texto c1"));
 
     rerender({ id: "c2" });
 
@@ -110,7 +111,7 @@ describe("useMessageEditor", () => {
       await act(async () => {
         await vi.advanceTimersByTimeAsync(350);
       });
-      expect(result.current.text).not.toBe("");
+      expect(result.current.text).toBe("Texto c1");
 
       act(() => {
         result.current.onRegenerate();
@@ -121,15 +122,14 @@ describe("useMessageEditor", () => {
       await act(async () => {
         await vi.advanceTimersByTimeAsync(350);
       });
-      const c2Text = result.current.text;
-      expect(c2Text).not.toBe("");
+      expect(result.current.text).toBe("Texto c2");
 
       // Let onRegenerate's remaining in-flight calls for c1 finish.
       await act(async () => {
         await vi.advanceTimersByTimeAsync(1000);
       });
 
-      expect(result.current.text).toBe(c2Text);
+      expect(result.current.text).toBe("Texto c2");
     } finally {
       vi.useRealTimers();
     }

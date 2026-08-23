@@ -25,6 +25,7 @@ const event: WeatherEvent = {
   segurados: 1248,
   regra: "Clientes com seguro residencial em endereços na área de alagamento devem receber comunicação preventiva.",
   tipoSeguro: "seguro residencial",
+  geocodesMunicipios: [],
 };
 
 const messageEditor = {

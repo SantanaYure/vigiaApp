@@ -19,7 +19,7 @@ export function EventRow({ event, isSelected }: EventRowProps) {
         <span className={styles.textGroup}>
           <span className={styles.tipo}>{event.tipo}</span>
           <span className={styles.meta}>
-            {event.regiao} · {event.status}
+            {event.regiao} · {event.status} · {event.detectadoEm}
           </span>
         </span>
         <span className={styles.statsGroup}>

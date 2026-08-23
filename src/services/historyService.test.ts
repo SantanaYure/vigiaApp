@@ -2,11 +2,8 @@ import { describe, expect, it } from "vitest";
 import { appendHistoryEntry, getHistory } from "./historyService";
 
 describe("historyService", () => {
-  it("returns the seed entries", async () => {
-    const history = await getHistory();
-
-    expect(history.length).toBeGreaterThanOrEqual(4);
-    expect(history.map((h) => h.id)).toContain("h1");
+  it("starts empty — no real history source exists yet", async () => {
+    expect(await getHistory()).toEqual([]);
   });
 
   it("appendHistoryEntry adds a new entry to the front", async () => {

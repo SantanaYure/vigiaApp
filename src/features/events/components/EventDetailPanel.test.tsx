@@ -16,10 +16,17 @@ const event: WeatherEvent = {
   segurados: 1248,
   regra: "Clientes com seguro residencial em endereços na área de alagamento devem receber comunicação preventiva.",
   tipoSeguro: "seguro residencial",
+  geocodesMunicipios: [],
 };
 
 const customers: Customer[] = [
-  { nome: "Marina Alves", apolice: "RES-88231", regiao: "Porto Alegre, RS", statusComunicacao: "Simulada" },
+  {
+    nome: "Marina Alves",
+    apolice: "RES-88231",
+    regiao: "Porto Alegre, RS",
+    statusComunicacao: "Simulada",
+    codigoIbge: "4314902",
+  },
 ];
 
 const communication: CommunicationWithEvent = {

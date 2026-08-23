@@ -1,6 +1,6 @@
 import { useAsyncData } from "../../hooks/useAsyncData";
 import { getAllCommunications } from "../../services/communicationsService";
-import { getAllEvents } from "../../services/eventsService";
+import { getRealEvents } from "../../services/realEventsSource";
 import type { CommunicationWithEvent } from "../../types/communication";
 import type { WeatherEvent } from "../../types/event";
 
@@ -10,7 +10,7 @@ export interface EventsPageData {
 }
 
 async function loadEventsPageData(): Promise<EventsPageData> {
-  const [events, communications] = await Promise.all([getAllEvents(), getAllCommunications()]);
+  const [events, communications] = await Promise.all([getRealEvents(), getAllCommunications()]);
 
   const communicationsByEventId: Record<string, CommunicationWithEvent> = {};
   for (const communication of communications) {

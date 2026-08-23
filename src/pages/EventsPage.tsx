@@ -35,7 +35,10 @@ export function EventsPage() {
   const selectedCommunication = selectedEvent ? (data?.communicationsByEventId[selectedEvent.id] ?? null) : null;
 
   const { data: customers } = useAsyncData(
-    () => (selectedEvent ? getCustomersForEvent(selectedEvent.id) : Promise.resolve<Customer[]>([])),
+    () =>
+      selectedEvent
+        ? getCustomersForEvent(selectedEvent.id, selectedEvent.geocodesMunicipios)
+        : Promise.resolve<Customer[]>([]),
     [selectedEvent?.id],
   );
 
@@ -100,7 +103,12 @@ export function EventsPage() {
 
           <div className={styles.layout}>
             <div className={styles.listColumn}>
-              {filteredEvents.length === 0 ? (
+              {data.events.length === 0 ? (
+                <EmptyState
+                  title="Sem alertas de risco no momento"
+                  description="Nenhum aviso climático ativo foi identificado pelo INMET no momento."
+                />
+              ) : filteredEvents.length === 0 ? (
                 <EmptyState
                   title="Nenhum evento encontrado"
                   description="Ajuste a busca ou o filtro de severidade para ver mais resultados."

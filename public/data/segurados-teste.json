@@ -1,0 +1,14 @@
+[
+  { "nome": "Marina Alves", "apolice": "RES-88231", "regiao": "São Paulo, SP", "statusComunicacao": "Aguardando revisão", "codigoIbge": "3550308" },
+  { "nome": "Carlos Eduardo Souza", "apolice": "RES-88450", "regiao": "Rio de Janeiro, RJ", "statusComunicacao": "Aguardando revisão", "codigoIbge": "3304557" },
+  { "nome": "Fernanda Lima", "apolice": "RES-77102", "regiao": "Porto Alegre, RS", "statusComunicacao": "Aguardando revisão", "codigoIbge": "4314902" },
+  { "nome": "João Pedro Martins", "apolice": "RES-90112", "regiao": "Fortaleza, CE", "statusComunicacao": "Aguardando revisão", "codigoIbge": "2304400" },
+  { "nome": "Ana Beatriz Costa", "apolice": "RES-90887", "regiao": "Salvador, BA", "statusComunicacao": "Aguardando revisão", "codigoIbge": "2927408" },
+  { "nome": "Rafael Nogueira", "apolice": "RES-91203", "regiao": "Belo Horizonte, MG", "statusComunicacao": "Aguardando revisão", "codigoIbge": "3106200" },
+  { "nome": "Juliana Ferreira", "apolice": "RES-91544", "regiao": "Curitiba, PR", "statusComunicacao": "Aguardando revisão", "codigoIbge": "4106902" },
+  { "nome": "Bruno Cavalcanti", "apolice": "RES-91820", "regiao": "Recife, PE", "statusComunicacao": "Aguardando revisão", "codigoIbge": "2611606" },
+  { "nome": "Larissa Mendes", "apolice": "RES-92011", "regiao": "Manaus, AM", "statusComunicacao": "Aguardando revisão", "codigoIbge": "1302603" },
+  { "nome": "Gustavo Ramos", "apolice": "RES-92377", "regiao": "Brasília, DF", "statusComunicacao": "Aguardando revisão", "codigoIbge": "5300108" },
+  { "nome": "Camila Duarte", "apolice": "RES-92540", "regiao": "Florianópolis, SC", "statusComunicacao": "Aguardando revisão", "codigoIbge": "4205407" },
+  { "nome": "Diego Barros", "apolice": "RES-92699", "regiao": "Goiânia, GO", "statusComunicacao": "Aguardando revisão", "codigoIbge": "5208707" }
+]

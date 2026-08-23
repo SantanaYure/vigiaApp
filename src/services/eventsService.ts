@@ -1,20 +1,16 @@
-import { eventsMock } from "../mocks/events";
+import { getRealEvents } from "./realEventsSource";
 import type { WeatherEvent } from "../types/event";
-import { simulateDelay } from "./simulateDelay";
 
-function listActiveEvents(): WeatherEvent[] {
-  return eventsMock.filter((event) => event.status !== "Encerrado");
+export async function getAllEvents(): Promise<WeatherEvent[]> {
+  return getRealEvents();
 }
 
 export async function getActiveEvents(): Promise<WeatherEvent[]> {
-  return simulateDelay(listActiveEvents());
+  const events = await getRealEvents();
+  return events.filter((event) => event.status !== "Encerrado");
 }
 
 export async function getEventById(id: string): Promise<WeatherEvent | null> {
-  const event = eventsMock.find((e) => e.id === id) ?? null;
-  return simulateDelay(event);
-}
-
-export async function getAllEvents(): Promise<WeatherEvent[]> {
-  return simulateDelay(eventsMock);
+  const events = await getRealEvents();
+  return events.find((event) => event.id === id) ?? null;
 }

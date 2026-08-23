@@ -130,3 +130,19 @@ This is source-level confirmation that the *implementation* matches the expected
 5. **Build output verified:** CSS file size consistent with Task 7's build (`dist/assets/index-*.css` ≈ 14.8 kB gzipped).
 
 Note: Live browser verification of the fix (rendering at 375px width and checking `document.documentElement.scrollWidth <= document.documentElement.clientWidth`) was not performed in this background session (browser tool non-functional for rendering); verification relied on build/test commands passing and static confirmation that `max-width: 100%` is the correct fix per the plan's updated CSS. A live visual confirmation in a rendering browser would be the next verification step if available.
+
+## Post-Task-7 fix — filters bar overflow
+
+**Bug:** After the detail panel mobile overflow fix, a live browser check at 375px viewport width revealed a second, smaller horizontal page overflow on all three pages (`/eventos/ev1`, `/comunicacoes/c1`, `/historico`). Cause: `.filters` container in `src/pages/listDetailPage.module.css` used `display: flex` without `flex-wrap: wrap`, so the search input and severity select remained on a single row. At 375px width, the filter controls (search ~320px + select ~80px + gap = ~400px total) exceeded the viewport width by ~19px, forcing horizontal page scroll.
+
+**Root cause:** The `.filters` flexbox was missing `flex-wrap: wrap` to allow the filter controls to wrap onto multiple lines on narrow viewports. This was not caught by the detail panel fix alone because the issue was orthogonal — the layout needed both the panel width constraint *and* the filter bar wrapping to be fully mobile-ready.
+
+**Fix applied:** Added `flex-wrap: wrap;` to the `.filters` rule in `src/pages/listDetailPage.module.css` immediately after `display: flex;`. This rule is shared by all three pages (`EventsPage.tsx`, `CommunicationsPage.tsx`, `HistoryPage.tsx`), so one edit fixes the filter bar overflow on all three screens.
+
+**Verification performed:**
+1. **`npm run build`** — exit 0, CSS compiles and bundles correctly.
+2. **`npm run typecheck`** — exit 0, no type errors.
+3. **`npm run lint`** — exit 0, no new lint issues (existing warnings in `useMessageEditor.ts` unchanged).
+4. **`npm run test`** — exit 0, all 27 test files, 74 tests passed (no regressions).
+
+Note: Live browser verification of the fix (rendering at 375px width and checking `document.documentElement.scrollWidth <= document.documentElement.clientWidth`) was not performed in this background session; verification relied on build/test commands passing and source confirmation that `flex-wrap: wrap` is the correct fix for wrapping flex items on narrow viewports.

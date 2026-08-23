@@ -1648,6 +1648,7 @@ export function EventDetailPanel({ event, communication, customers, messageEdito
 ```css
 .panel {
   width: 460px;
+  max-width: 100%;
   flex-shrink: 0;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
@@ -2453,6 +2454,7 @@ export function CommunicationDetailPanel({ communication, event, messageEditor }
 ```css
 .panel {
   width: 460px;
+  max-width: 100%;
   flex-shrink: 0;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);

@@ -4,6 +4,11 @@ Monitoramento climático proativo para seguradoras (Grupo VIL) — projeto do De
 
 Identifica avisos meteorológicos reais (INMET), cruza com a localização dos segurados e demonstra o fluxo de comunicação preventiva — do dado bruto até a simulação de envio.
 
+## Publicado (Vercel)
+
+- **App:** https://vigia-front-self.vercel.app
+- **API:** https://vigia-backend-navy.vercel.app
+
 ## Estrutura do repositório
 
 Monorepo com três partes independentes, cada uma com seu próprio README:

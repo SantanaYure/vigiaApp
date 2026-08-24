@@ -35,7 +35,9 @@ app.post("/api/regenerar-mensagem", (req, res) => {
 
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3001;
 
-if (process.env.NODE_ENV !== "test") {
+// Na Vercel o app roda como função serverless (ver api/index.ts) — não deve
+// abrir uma porta própria. Só sobe um servidor tradicional localmente/testes.
+if (process.env.NODE_ENV !== "test" && !process.env.VERCEL) {
   app.listen(PORT, () => {
     console.log(`Backend do Vigia rodando em http://localhost:${PORT}`);
   });

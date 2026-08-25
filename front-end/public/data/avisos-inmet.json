@@ -1508,62 +1508,7 @@
       "Obtenha mais informações junto à Defesa Civil (telefone 199) e ao Corpo de Bombeiros (telefone 193)."
     ],
     "fonte": "INMET",
-    "coletado_em": "2026-08-25T11:22:46.890989+00:00"
-  },
-  {
-    "id": 55476,
-    "tipo": "Geada",
-    "severidade": "Perigo Potencial",
-    "cor": "#FFFE00",
-    "inicio": "2026-08-25T00:00:00+00:00",
-    "fim": "2026-08-25T08:30:00+00:00",
-    "estados": [
-      "Rio Grande do Sul"
-    ],
-    "geocodes_municipios": [
-      "4300034",
-      "4300638",
-      "4300851",
-      "4301073",
-      "4301305",
-      "4301602",
-      "4302808",
-      "4303509",
-      "4304358",
-      "4304507",
-      "4304663",
-      "4305124",
-      "4305447",
-      "4306056",
-      "4306502",
-      "4306601",
-      "4306908",
-      "4307104",
-      "4309654",
-      "4311007",
-      "4311502",
-      "4312450",
-      "4314175",
-      "4314209",
-      "4314407",
-      "4314506",
-      "4314605",
-      "4315602",
-      "4316402",
-      "4317004",
-      "4317103",
-      "4318309",
-      "4318804",
-      "4322327"
-    ],
-    "riscos": [
-      "Risco leve de perda de plantações. Temperatura mínima até 3ºC."
-    ],
-    "instrucoes": [
-      "Contate a Defesa Civil (telefone: 199)."
-    ],
-    "fonte": "INMET",
-    "coletado_em": "2026-08-25T11:22:46.891008+00:00"
+    "coletado_em": "2026-08-25T11:51:23.572337+00:00"
   },
   {
     "id": 55479,
@@ -2282,6 +2227,6 @@
       "Obtenha mais informações junto à Defesa Civil (telefone 199) e ao Corpo de Bombeiros (telefone 193)."
     ],
     "fonte": "INMET",
-    "coletado_em": "2026-08-25T11:22:46.891076+00:00"
+    "coletado_em": "2026-08-25T11:51:23.572400+00:00"
   }
 ]

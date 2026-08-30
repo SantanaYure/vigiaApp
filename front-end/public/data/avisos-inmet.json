@@ -1912,7 +1912,7 @@
       "Obtenha mais informações junto à Defesa Civil (telefone 199) e ao Corpo de Bombeiros (telefone 193)."
     ],
     "fonte": "INMET",
-    "coletado_em": "2026-08-30T07:07:00.433587+00:00"
+    "coletado_em": "2026-08-30T13:02:16.332722+00:00"
   },
   {
     "id": 55523,
@@ -3063,7 +3063,148 @@
       "Obtenha mais informações junto à Defesa Civil (telefone 199) e ao Corpo de Bombeiros (telefone 193)."
     ],
     "fonte": "INMET",
-    "coletado_em": "2026-08-30T07:07:00.433694+00:00"
+    "coletado_em": "2026-08-30T13:02:16.332828+00:00"
+  },
+  {
+    "id": 55531,
+    "tipo": "Chuvas Intensas",
+    "severidade": "Perigo Potencial",
+    "cor": "#FFFE00",
+    "inicio": "2026-08-30T15:00:00+00:00",
+    "fim": "2026-08-31T10:00:00+00:00",
+    "estados": [
+      "Pernambuco",
+      "Alagoas"
+    ],
+    "geocodes_municipios": [
+      "2600054",
+      "2600401",
+      "2600906",
+      "2601052",
+      "2700409",
+      "2700508",
+      "2700607",
+      "2601409",
+      "2701001",
+      "2701100",
+      "2602902",
+      "2603454",
+      "2701357",
+      "2701407",
+      "2701704",
+      "2604205",
+      "2702108",
+      "2702207",
+      "2604809",
+      "2702306",
+      "2605202",
+      "2702801",
+      "2605905",
+      "2606200",
+      "2606804",
+      "2607604",
+      "2607208",
+      "2607752",
+      "2607802",
+      "2607901",
+      "2703502",
+      "2703601",
+      "2703759",
+      "2703809",
+      "2608206",
+      "2703908",
+      "2704302",
+      "2704500",
+      "2609204",
+      "2704708",
+      "2705101",
+      "2705200",
+      "2609402",
+      "2705507",
+      "2705606",
+      "2609600",
+      "2610004",
+      "2706448",
+      "2706505",
+      "2610608",
+      "2610707",
+      "2706901",
+      "2611309",
+      "2707305",
+      "2707404",
+      "2611408",
+      "2611606",
+      "2611804",
+      "2611903",
+      "2707701",
+      "2707800",
+      "2707909",
+      "2613404",
+      "2613701",
+      "2708501",
+      "2708600",
+      "2708709",
+      "2708907",
+      "2614204",
+      "2614857",
+      "2709301",
+      "2616407",
+      "2616506"
+    ],
+    "riscos": [
+      "Chuva entre 20 e 30 mm/h ou até 50 mm/dia, ventos intensos (40-60 km/h). Baixo risco de corte de energia elétrica, queda de galhos de árvores, alagamentos e de descargas elétricas."
+    ],
+    "instrucoes": [
+      "Em caso de rajadas de vento: (não se abrigue debaixo de árvores, pois há leve risco de queda e descargas elétricas e não estacione veículos próximos a torres de transmissão e placas de propaganda). ",
+      "Evite usar aparelhos eletrônicos ligados à tomada. ",
+      "Obtenha mais informações junto à Defesa Civil (telefone 199) e ao Corpo de Bombeiros (telefone 193)."
+    ],
+    "fonte": "INMET",
+    "coletado_em": "2026-08-30T13:02:16.332840+00:00"
+  },
+  {
+    "id": 55532,
+    "tipo": "Ventos Costeiros",
+    "severidade": "Perigo Potencial",
+    "cor": "#FFFE00",
+    "inicio": "2026-08-30T10:00:00+00:00",
+    "fim": "2026-08-31T23:59:00+00:00",
+    "estados": [
+      "Espírito Santo",
+      "Rio de Janeiro"
+    ],
+    "geocodes_municipios": [
+      "3200409",
+      "3300233",
+      "3300258",
+      "3300704",
+      "3301009",
+      "3300936",
+      "3301306",
+      "3301405",
+      "3202405",
+      "3202603",
+      "3202801",
+      "3302403",
+      "3203320",
+      "3204203",
+      "3204302",
+      "3304151",
+      "3304524",
+      "3204401",
+      "3304755",
+      "3305000",
+      "3305208",
+      "3205200"
+    ],
+    "riscos": [
+      "Intensificação dos ventos nas regiões litorâneas, movimentando dunas de areia sobre construções na orla."
+    ],
+    "instrucoes": [
+      "Contate a Defesa Civil (telefone: 199)."
+    ],
+    "fonte": "INMET",
+    "coletado_em": "2026-08-30T13:02:16.332846+00:00"
   },
   {
     "id": 55524,
@@ -3761,7 +3902,7 @@
       "Obtenha mais informações junto à Defesa Civil (telefone 199) e ao Corpo de Bombeiros (telefone 193)."
     ],
     "fonte": "INMET",
-    "coletado_em": "2026-08-30T07:07:00.433753+00:00"
+    "coletado_em": "2026-08-30T13:02:16.332905+00:00"
   },
   {
     "id": 55525,
@@ -4596,6 +4737,6 @@
       "Obtenha mais informações junto à Defesa Civil (telefone 199) e ao Corpo de Bombeiros (telefone 193)."
     ],
     "fonte": "INMET",
-    "coletado_em": "2026-08-30T07:07:00.433821+00:00"
+    "coletado_em": "2026-08-30T13:02:16.332973+00:00"
   }
 ]

@@ -45,7 +45,7 @@
       "Obtenha mais informações junto à Defesa Civil (telefone 199) e ao Corpo de Bombeiros (telefone 193)."
     ],
     "fonte": "INMET",
-    "coletado_em": "2026-09-09T16:47:11.439479+00:00"
+    "coletado_em": "2026-09-09T19:32:38.621923+00:00"
   },
   {
     "id": 55651,
@@ -2992,7 +2992,7 @@
       "Obtenha mais informações junto à Defesa Civil (telefone 199) e ao Corpo de Bombeiros (telefone 193)."
     ],
     "fonte": "INMET",
-    "coletado_em": "2026-09-09T16:47:11.439909+00:00"
+    "coletado_em": "2026-09-09T19:32:38.622275+00:00"
   },
   {
     "id": 55657,
@@ -3560,6 +3560,60 @@
       "Obtenha mais informações junto à Defesa Civil (telefone 199) e ao Corpo de Bombeiros (telefone 193)."
     ],
     "fonte": "INMET",
-    "coletado_em": "2026-09-09T16:47:11.439962+00:00"
+    "coletado_em": "2026-09-09T19:32:38.622321+00:00"
+  },
+  {
+    "id": 55663,
+    "tipo": "Acumulado de Chuva",
+    "severidade": "Perigo",
+    "cor": "#F96602",
+    "inicio": "2026-09-09T15:30:00+00:00",
+    "fim": "2026-09-10T10:00:00+00:00",
+    "estados": [
+      "São Paulo",
+      "Paraná",
+      "Rio de Janeiro"
+    ],
+    "geocodes_municipios": [
+      "3506359",
+      "3506607",
+      "3509908",
+      "3510500",
+      "3513504",
+      "3513603",
+      "4109500",
+      "3518701",
+      "3520301",
+      "3520400",
+      "3520426",
+      "3522109",
+      "3523305",
+      "3530607",
+      "3531100",
+      "3532306",
+      "3535606",
+      "3303807",
+      "3537206",
+      "3537602",
+      "3541000",
+      "3545001",
+      "3548500",
+      "3550001",
+      "3550704",
+      "3551009",
+      "3555406"
+    ],
+    "riscos": [
+      "Chuva entre 30 a 60 mm/h ou 50 a 100 mm/dia. Risco de alagamentos, deslizamentos de encostas, transbordamentos de rios, em cidades com tais áreas de risco."
+    ],
+    "instrucoes": [
+      "Evite enfrentar o mau tempo. ",
+      "Observe alteração nas encostas. ",
+      "Se possível, desligue aparelhos elétricos e quadro geral de energia. ",
+      "Em caso de situação de inundação, ou similar, proteja seus pertences da água envoltos em sacos plásticos. ",
+      "Obtenha mais informações junto à Defesa Civil (telefone 199) e ao Corpo de Bombeiros (telefone 193)."
+    ],
+    "fonte": "INMET",
+    "coletado_em": "2026-09-09T19:32:38.622327+00:00"
   }
 ]

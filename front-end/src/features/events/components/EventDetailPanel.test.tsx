@@ -24,7 +24,7 @@ const customers: Customer[] = [
     nome: "Marina Alves",
     apolice: "RES-88231",
     regiao: "Porto Alegre, RS",
-    statusComunicacao: "Simulada",
+  statusComunicacao: "Enviada",
     codigoIbge: "4314902",
   },
 ];
@@ -33,7 +33,7 @@ const communication: CommunicationWithEvent = {
   id: "c1",
   eventId: "ev1",
   canal: "SMS",
-  status: "Simulada",
+  status: "Enviada",
   segurados: 1248,
   geradoEm: "14:11",
   eventoTipo: "Chuva intensa",

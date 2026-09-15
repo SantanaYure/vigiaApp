@@ -15,3 +15,15 @@ export function garantirCarteiraInicial() {
   transaction(() => CARTEIRA_INICIAL.forEach(segurado => put("customers", segurado.apolice, segurado)));
   return true;
 }
+
+/** Migra registros criados pela primeira versão, que chamava o envio de simulação. */
+export function migrarStatusEnvio() {
+  const comunicacoes=all<Record<string,unknown>>("communications").filter(c=>c.status==="Simulada");
+  const historico=all<Record<string,unknown>>("history").filter(c=>c.status==="Simulada");
+  if(!comunicacoes.length && !historico.length) return 0;
+  transaction(()=>{
+    comunicacoes.forEach(c=>put("communications",String(c.id),{...c,status:"Enviada",enviadaEm:c.simuladaEm}));
+    historico.forEach(c=>put("history",String(c.id),{...c,status:"Enviada"}));
+  });
+  return comunicacoes.length+historico.length;
+}

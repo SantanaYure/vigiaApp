@@ -42,7 +42,7 @@ export function DashboardPage() {
             <StatCard label="Eventos ativos" value={data.kpiEventosAtivos} />
             <StatCard label="Segurados em risco" value={data.kpiSegurados.toLocaleString("pt-BR")} />
             <StatCard label="Comunicações geradas" value={data.kpiComunicacoes} />
-            <StatCard label="Simulações concluídas" value={data.kpiSimuladas} />
+            <StatCard label="Envios concluídos" value={data.kpiEnviadas} />
           </div>
 
           <section className={styles.section}>

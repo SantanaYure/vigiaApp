@@ -2,7 +2,7 @@
 
 Monitoramento climático proativo para seguradoras (Grupo VIL) — projeto do Desafio 5 do InsurMinds.
 
-Identifica avisos meteorológicos reais (INMET), cruza com a localização dos segurados e demonstra o fluxo de comunicação preventiva — do dado bruto até a simulação de envio.
+Identifica avisos meteorológicos reais (INMET), cruza com a localização dos segurados e demonstra o fluxo de comunicação preventiva — do dado bruto até o envio.
 
 ## Publicado (Vercel)
 

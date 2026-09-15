@@ -6,7 +6,7 @@ import * as historyService from "../../services/historyService";
 describe("useHistoryData", () => {
   it("loads whatever getHistory returns", async () => {
     vi.spyOn(historyService, "getHistory").mockResolvedValueOnce([
-      { id: "h1", eventoTipo: "Vendaval", regiao: "CE", segurados: 1, canal: "SMS", status: "Simulada", horario: "agora" },
+      { id: "h1", eventoTipo: "Vendaval", regiao: "CE", segurados: 1, canal: "SMS", status: "Enviada", horario: "agora" },
     ]);
 
     const { result } = renderHook(() => useHistoryData());

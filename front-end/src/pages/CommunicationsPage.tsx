@@ -18,7 +18,7 @@ const STATUS_OPTIONS: { value: CommunicationStatus | "todos"; label: string }[] 
   { value: "todos", label: "Todos os status" },
   { value: "Aguardando revisão", label: "Aguardando revisão" },
   { value: "Revisada", label: "Revisada" },
-  { value: "Simulada", label: "Simulada" },
+  { value: "Enviada", label: "Enviada" },
   { value: "Erro", label: "Erro" },
 ];
 

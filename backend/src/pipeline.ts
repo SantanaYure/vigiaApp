@@ -88,10 +88,10 @@ function currentContext(comm:Comunicacao) {
 }
 export async function regenerar(id:string) {
   const comm=requireComm(id);
-  if(comm.status==="Simulada") throw new AppError(409,"Comunicação já simulada.");
+  if(comm.status==="Enviada") throw new AppError(409,"Comunicação já enviada.");
   const {evento,cliente,decisao}=currentContext(comm);
   const result=await gerarMensagemComGemini(evento,cliente,decisao,true);
-  // Não sobrescrever edição ou simulação concorrente.
+  // Não sobrescrever edição ou envio concorrente.
   if(JSON.stringify(requireComm(id))!==JSON.stringify(comm)) throw new AppError(409,"Comunicação alterada durante a geração.");
   currentContext(comm);
   const updated={...comm,...result,status:"Aguardando revisão" as const};
@@ -99,15 +99,15 @@ export async function regenerar(id:string) {
 }
 export function editar(id:string,texto:unknown) {
   const comm=requireComm(id);
-  if(comm.status==="Simulada") throw new AppError(409,"Comunicação já simulada.");
+  if(comm.status==="Enviada") throw new AppError(409,"Comunicação já enviada.");
   if(typeof texto!=="string" || !texto.trim() || texto.length>4000) throw new AppError(400,"Texto deve conter entre 1 e 4000 caracteres.");
   currentContext(comm);
   const updated={...comm,texto:texto.trim(),status:"Revisada" as const};put("communications",id,updated);return updated;
 }
-export async function simular(id:string) {
+export async function enviar(id:string) {
   const comm=requireComm(id);
-  if(comm.status==="Simulada") return comm;
-  // Revalidar avisos na fonte antes de registrar o envio simulado.
+  if(comm.status==="Enviada") return comm;
+  // Revalidar avisos na fonte antes de registrar o envio.
   const {eventos,coletadoEm,raw}=await coletarAvisos();
   transaction(()=>{
     eventos.forEach(e=>put("events",e.id,e));
@@ -121,7 +121,7 @@ function transactionResult(id:string) {
   let updated:Comunicacao;
   transaction(()=>{
     const comm=requireComm(id);
-    if(comm.status==="Simulada"){updated=comm;return;}
+    if(comm.status==="Enviada"){updated=comm;return;}
     currentContext(comm);
     const cliente=all<Segurado>("customers").find(c=>c.apolice===comm.apolice);
     if (!cliente) throw new AppError(409,"Segurado não encontrado; não foi possível enviar o alerta.");
@@ -132,10 +132,12 @@ function transactionResult(id:string) {
     }
     const destinatario=cliente.canal === "SMS" ? cliente.telefone! : cliente.apolice;
     const mensagem=cliente.canal === "SMS" ? "Alerta SMS enviado com sucesso." : "Alerta por e-mail enviado com sucesso.";
-    updated={...comm,status:"Simulada",simuladaEm:new Date().toISOString(),notificacao:{status:"confirmada",mensagem,canal:cliente.canal,destinatario}};
+    updated={...comm,status:"Enviada",enviadaEm:new Date().toISOString(),notificacao:{status:"confirmada",mensagem,canal:cliente.canal,destinatario}};
     put("communications",id,updated);
     put("history",id,{id,eventId:comm.eventId,eventoTipo:comm.eventoTipo,regiao:comm.regiao,segurados:1,canal:comm.canal,
-      status:"Simulada",horario:updated.simuladaEm,texto:comm.texto,modelo:comm.modelo,notificacao:updated.notificacao});
+      status:"Enviada",horario:updated.enviadaEm,texto:comm.texto,modelo:comm.modelo,notificacao:updated.notificacao});
   });
   return updated!;
 }
+/** Compatibilidade com clientes antigos que ainda chamam a rota de simulação. */
+export const simular = enviar;

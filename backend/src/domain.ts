@@ -17,10 +17,10 @@ export interface Decisao {
 }
 export interface Comunicacao {
   id: string; eventId: string; eventoTipo: string; apolice: string; regiao: string;
-  canal: "SMS" | "E-mail"; status: "Aguardando revisão" | "Revisada" | "Simulada";
+  canal: "SMS" | "E-mail"; status: "Aguardando revisão" | "Revisada" | "Enviada";
   segurados: number; geradoEm: string; texto: string; modelo: string;
   decisao: Decisao; contexto: { evento: Evento; segurado: Omit<Segurado, "nome" | "apolice"> };
-  simuladaEm?: string;
+  enviadaEm?: string;
   notificacao?: { status: "confirmada"; mensagem: string; canal: "SMS" | "E-mail"; destinatario: string };
 }
 export class AppError extends Error {

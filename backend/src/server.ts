@@ -4,11 +4,12 @@ import express, { type Request, type Response, type NextFunction } from "express
 import { pathToFileURL } from "node:url";
 import { AppError, validarSegurados, PRODUTOS, RISCOS, type Segurado, type Evento, type Comunicacao } from "./domain.js";
 import { all, get, put, transaction } from "./store.js";
-import { executar, emExecucao, eventosUI, requireComm, regenerar, editar, simular, type Execucao } from "./pipeline.js";
+import { executar, emExecucao, eventosUI, requireComm, regenerar, editar, enviar, simular, type Execucao } from "./pipeline.js";
 import { MODELO, PROVEDOR, GEMINI_MODELO, GROQ_MODELO, verificarGemini } from "./mensagens.js";
 import { decidir, MATRIZ, VERSAO_REGRA, FONTE_REGRA } from "./rules.js";
-import { garantirCarteiraInicial } from "./seed.js";
+import { garantirCarteiraInicial, migrarStatusEnvio } from "./seed.js";
 garantirCarteiraInicial();
+migrarStatusEnvio();
 const app=express();
 app.disable("x-powered-by");
 const origins=(process.env.CORS_ORIGINS||"http://localhost:5173,http://127.0.0.1:5173,http://localhost:4173,http://127.0.0.1:4173").split(",");
@@ -62,6 +63,7 @@ app.get("/api/comunicacoes",(_req,res)=>res.json(all<Comunicacao>("communication
 app.get("/api/comunicacoes/:id",route((req,res)=>res.json(requireComm(req.params.id))));
 app.put("/api/comunicacoes/:id/texto",route((req,res)=>res.json(editar(req.params.id,req.body?.texto))));
 app.post("/api/comunicacoes/:id/regenerar",route(async(req,res)=>res.json(await regenerar(req.params.id))));
+app.post("/api/comunicacoes/:id/enviar",route(async(req,res)=>res.json(await enviar(req.params.id))));
 app.post("/api/comunicacoes/:id/simular",route(async(req,res)=>res.json(await simular(req.params.id))));
 app.get("/api/historico",(_req,res)=>res.json(all("history")));
 // Compatibilidade por ID: o servidor mantém o contexto autorizado, sem aceitar avisos inventados no corpo.

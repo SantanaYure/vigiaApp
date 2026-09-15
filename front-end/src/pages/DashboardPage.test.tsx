@@ -33,7 +33,7 @@ const COMMUNICATION: CommunicationWithEvent = {
   id: "c1",
   eventId: "inmet-1",
   canal: "SMS",
-  status: "Simulada",
+  status: "Enviada",
   segurados: 5,
   geradoEm: "08:30",
   eventoTipo: "Vendaval",
@@ -83,7 +83,7 @@ describe("DashboardPage", () => {
     expect(commSection).not.toBeNull();
     const withinComm = within(commSection as HTMLElement);
     expect(withinComm.getAllByText(/SMS|E-mail/).length).toBeGreaterThan(0);
-    expect(withinComm.getByText("Simulada")).toBeInTheDocument();
+    expect(withinComm.getByText("Enviada")).toBeInTheDocument();
   });
 
   it("shows both empty states when there is no real data yet", async () => {

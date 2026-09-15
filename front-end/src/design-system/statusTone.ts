@@ -17,7 +17,6 @@ export function severityTone(severity: Severity): SemanticTone {
 
 export function communicationStatusTone(status: CommunicationStatus): SemanticTone {
   switch (status) {
-    case "Simulada":
     case "Enviada":
       return "success";
     case "Revisada":

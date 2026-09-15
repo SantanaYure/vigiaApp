@@ -8,7 +8,7 @@ export interface DashboardData {
   kpiEventosAtivos: number;
   kpiSegurados: number;
   kpiComunicacoes: number;
-  kpiSimuladas: number;
+  kpiEnviadas: number;
   attentionEvents: WeatherEvent[];
   recentCommunications: CommunicationWithEvent[];
 }
@@ -31,7 +31,7 @@ async function loadDashboardData(): Promise<DashboardData> {
     kpiEventosAtivos: activeEvents.length,
     kpiSegurados: activeEvents.reduce((total, event) => total + event.segurados, 0),
     kpiComunicacoes: allCommunications.length,
-    kpiSimuladas: allCommunications.filter((communication) => communication.status === "Simulada").length,
+    kpiEnviadas: allCommunications.filter((communication) => communication.status === "Enviada").length,
     attentionEvents: bySeverity(activeEvents).slice(0, 3),
     recentCommunications: allCommunications.slice(0, 3),
   };

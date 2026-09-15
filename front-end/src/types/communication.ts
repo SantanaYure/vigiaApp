@@ -1,5 +1,5 @@
 export type CommunicationChannel = "SMS" | "E-mail";
-export type CommunicationStatus = "Aguardando revisão" | "Revisada" | "Simulada" | "Erro" | "Enviada" | "Preparada";
+export type CommunicationStatus = "Aguardando revisão" | "Revisada" | "Erro" | "Enviada" | "Preparada";
 
 export interface Communication {
   id: string;

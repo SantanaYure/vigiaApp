@@ -12,7 +12,6 @@ describe("severityTone", () => {
 
 describe("communicationStatusTone", () => {
   it("maps every communication status to its tone", () => {
-    expect(communicationStatusTone("Simulada")).toBe("success");
     expect(communicationStatusTone("Enviada")).toBe("success");
     expect(communicationStatusTone("Revisada")).toBe("info");
     expect(communicationStatusTone("Erro")).toBe("danger");

@@ -8,7 +8,7 @@ const communication: CommunicationWithEvent = {
   id: "c1",
   eventId: "ev1",
   canal: "SMS",
-  status: "Simulada",
+  status: "Enviada",
   segurados: 1248,
   geradoEm: "14:11",
   eventoTipo: "Chuva intensa",
@@ -29,7 +29,7 @@ describe("MessageEditorCard", () => {
     );
 
     expect(screen.getByText("SMS")).toBeInTheDocument();
-    expect(screen.getByText("Simulada")).toBeInTheDocument();
+    expect(screen.getByText("Enviada")).toBeInTheDocument();
     expect(screen.getByText("Olá! Identificamos previsão de chuva intensa...")).toBeInTheDocument();
     expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
   });

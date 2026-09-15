@@ -15,7 +15,7 @@ const STATUS_OPTIONS: { value: CommunicationStatus | "todos"; label: string }[] 
   { value: "todos", label: "Todos os status" },
   { value: "Aguardando revisão", label: "Aguardando revisão" },
   { value: "Revisada", label: "Revisada" },
-  { value: "Simulada", label: "Simulada" },
+  { value: "Enviada", label: "Enviada" },
   { value: "Erro", label: "Erro" },
 ];
 
@@ -27,7 +27,7 @@ export function HistoryPage() {
 
   return (
     <div>
-      <PageHeader title="Histórico" subtitle="Registro de eventos, comunicações e simulações de envio" />
+      <PageHeader title="Histórico" subtitle="Registro de eventos, comunicações e envios" />
 
       {loading && !data ? (
         <div className={sharedStyles.skeletonGroup}>

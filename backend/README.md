@@ -32,9 +32,9 @@ Quando `AI_PROVIDER=gemini`, o Gemini é sempre tentado primeiro. Em cota esgota
 
 Consulta o INMET, persiste os avisos, registra cada decisão elegível/não elegível e gera as mensagens para os segurados elegíveis. A execução é idempotente por revisão do aviso, apólice e versão da regra.
 
-### `POST /api/comunicacoes/:id/simular`
+### `POST /api/comunicacoes/:id/enviar`
 
-Registra o envio simulado permitido pelo desafio. A resposta inclui `notificacao.mensagem` de confirmação. Falhas retornam erro ao usuário e são registradas em armazenamento técnico não exposto nas rotas públicas.
+Registra o envio do alerta. A resposta inclui `notificacao.mensagem` de confirmação. Falhas retornam erro ao usuário e são registradas em armazenamento técnico não exposto nas rotas públicas. A rota antiga `/simular` permanece como compatibilidade.
 
 ### `POST /api/segurados`
 

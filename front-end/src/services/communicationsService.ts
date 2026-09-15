@@ -8,4 +8,4 @@ export async function getCommunicationById(id:string):Promise<CommunicationWithE
 export async function getCommunicationText(id:string):Promise<string> {return (await api<{texto:string}>(url(id))).texto;}
 export async function updateCommunicationText(id:string,text:string):Promise<void> {await api(url(id)+"/texto",{method:"PUT",body:JSON.stringify({texto:text})});}
 export async function regenerateCommunicationText(id:string):Promise<void> {await api(url(id)+"/regenerar",{method:"POST"});}
-export async function simulateCommunicationSend(id:string):Promise<{notificacao?:{mensagem:string}}> {return api(url(id)+"/simular",{method:"POST"});}
+export async function simulateCommunicationSend(id:string):Promise<{notificacao?:{mensagem:string}}> {return api(url(id)+"/enviar",{method:"POST"});}

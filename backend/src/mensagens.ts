@@ -64,7 +64,7 @@ async function gerarComGroq(prompt: string, regenerado: boolean, canal: string):
     const body=await response.json() as {choices?:Array<{message?:{content?:string}}>;model?:string};
     const texto=body.choices?.[0]?.message?.content?.trim();
     if(!texto) throw new AppError(502,"Groq retornou resposta vazia.");
-    if(texto.length>(canal==="SMS"?900:2200)) throw new AppError(502,"Mensagem excedeu o limite do canal; regenere antes de simular.");
+    if(texto.length>(canal==="SMS"?900:2200)) throw new AppError(502,"Mensagem excedeu o limite do canal; regenere antes de enviar.");
     return {texto,modelo:body.model || GROQ_MODELO,provedor:"groq"};
   } catch(e) { return providerError(e,"groq"); }
 }
@@ -96,7 +96,7 @@ async function gerarComGemini(prompt:string,regenerado:boolean,canal:string):Pro
     });
     const texto=response.text?.trim();
     if (!texto) throw new AppError(502,"Gemini retornou texto vazio, bloqueado ou incompleto.");
-    if (texto.length > (canal==="SMS"?900:2200)) throw new AppError(502,"Mensagem excedeu o limite do canal; regenere antes de simular.");
+    if (texto.length > (canal==="SMS"?900:2200)) throw new AppError(502,"Mensagem excedeu o limite do canal; regenere antes de enviar.");
     return {texto,modelo:response.modelVersion || GEMINI_MODELO,provedor:"gemini"};
   } catch(e) { return providerError(e,"gemini"); }
 }

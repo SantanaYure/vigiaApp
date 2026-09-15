@@ -32,7 +32,7 @@ describe("useDashboardData", () => {
       kpiEventosAtivos: 1,
       kpiSegurados: 5,
       kpiComunicacoes: 0,
-      kpiSimuladas: 0,
+      kpiEnviadas: 0,
     });
     expect(result.current.data?.attentionEvents.map((e) => e.id)).toEqual(["inmet-1"]);
   });
@@ -67,7 +67,7 @@ describe("useDashboardData", () => {
       kpiEventosAtivos: 0,
       kpiSegurados: 0,
       kpiComunicacoes: 0,
-      kpiSimuladas: 0,
+      kpiEnviadas: 0,
       attentionEvents: [],
       recentCommunications: [],
     });

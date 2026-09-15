@@ -11,9 +11,9 @@ describe("StatusPill", () => {
   });
 
   it("renders as a flat pill with no decorative dot", () => {
-    render(<StatusPill tone="success" label="Simulada" variant="pill" />);
+    render(<StatusPill tone="success" label="Enviada" variant="pill" />);
 
-    const pill = screen.getByText("Simulada");
+    const pill = screen.getByText("Enviada");
     expect(pill.querySelector("span")).toBeNull();
   });
 });

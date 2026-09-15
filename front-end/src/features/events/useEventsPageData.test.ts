@@ -43,7 +43,7 @@ describe("useEventsPageData", () => {
 
   it("builds a lookup of every communication by event id, independent of the events list", async () => {
     vi.spyOn(communicationsService, "getAllCommunications").mockResolvedValueOnce([
-      { id: "c1", eventId: "inmet-1", canal: "SMS", status: "Simulada", segurados: 0, geradoEm: "08:00", eventoTipo: "Vendaval" },
+      { id: "c1", eventId: "inmet-1", canal: "SMS", status: "Enviada", segurados: 0, geradoEm: "08:00", eventoTipo: "Vendaval" },
     ]);
 
     const { result } = renderHook(() => useEventsPageData());

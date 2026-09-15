@@ -3,8 +3,8 @@ import { matchCustomersByGeocodes } from "./geoMatch";
 import type { Customer } from "../types/customer";
 
 const CUSTOMERS: Customer[] = [
-  { nome: "Marina Alves", apolice: "RES-1", regiao: "Porto Alegre, RS", statusComunicacao: "Simulada", codigoIbge: "4314902" },
-  { nome: "Fernanda Lima", apolice: "RES-2", regiao: "Canoas, RS", statusComunicacao: "Simulada", codigoIbge: "4304606" },
+  { nome: "Marina Alves", apolice: "RES-1", regiao: "Porto Alegre, RS", statusComunicacao: "Enviada", codigoIbge: "4314902" },
+  { nome: "Fernanda Lima", apolice: "RES-2", regiao: "Canoas, RS", statusComunicacao: "Enviada", codigoIbge: "4304606" },
 ];
 
 describe("matchCustomersByGeocodes", () => {

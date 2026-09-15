@@ -29,3 +29,8 @@ __pycache__/
 *.njsproj
 *.sln
 *.sw?
+
+# Dados reais e evidências locais (fora do ZIP e do Git)
+backend/data/
+backend/evidence/
+output/

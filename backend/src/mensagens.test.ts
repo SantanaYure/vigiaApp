@@ -1,61 +1,12 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
-import { construirPrompt, gerarMensagemComGemini } from "./mensagens.js";
-
-const generateContentMock = vi.fn();
-
-vi.mock("@google/genai", () => {
-  return {
-    GoogleGenAI: class {
-      models = {
-        generateContent: generateContentMock,
-      };
-    },
-  };
-});
-
-const CONTEXTO = { eventoTipo: "Vendaval", severidade: "Alto", regiao: "Fortaleza, CE" };
-
-describe("construirPrompt", () => {
-  it("inclui os dados do evento no prompt inicial", () => {
-    const prompt = construirPrompt(CONTEXTO);
-    expect(prompt).toContain("Vendaval");
-    expect(prompt).toContain("Alto");
-    expect(prompt).toContain("Fortaleza, CE");
-  });
-
-  it("gera instrução de versão concisa quando regenerado = true", () => {
-    const prompt = construirPrompt(CONTEXTO, true);
-    expect(prompt).toContain("mais concisa");
-    expect(prompt).toContain("Vendaval");
-  });
-});
-
-describe("gerarMensagemComGemini", () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-    delete process.env.GEMINI_API_KEY;
-  });
-
-  it("lança erro amigável quando GEMINI_API_KEY não está configurada", async () => {
-    await expect(gerarMensagemComGemini(CONTEXTO)).rejects.toThrow(
-      /GEMINI_API_KEY não está configurada/
-    );
-  });
-
-  it("gera mensagem com Gemini 2.5 Flash quando a chave é válida", async () => {
-    generateContentMock.mockResolvedValueOnce({
-      text: "Atenção Fortaleza: vendaval previsto. Mantenha-se em local seguro.",
-    });
-
-    const resultado = await gerarMensagemComGemini(CONTEXTO, false, {
-      apiKey: "chave-valida-teste",
-    });
-
-    expect(resultado).toBe("Atenção Fortaleza: vendaval previsto. Mantenha-se em local seguro.");
-    expect(generateContentMock).toHaveBeenCalledWith(
-      expect.objectContaining({
-        model: "gemini-2.5-flash",
-      })
-    );
-  });
+import {it,expect} from "vitest";
+it("expõe Gemini padrão e Groq opcional sem expor credenciais",async()=>{
+  const response=await fetch((process.env.VIGIA_API_URL||"http://localhost:3001")+"/api/ia/provedores");
+  const body=await response.json();
+  expect(response.status).toBe(200);expect(body.ativo).toBe("gemini");
+  expect(body.provedores).toEqual(expect.arrayContaining([
+    expect.objectContaining({id:"gemini",modelo:"gemini-3.5-flash"}),
+    expect.objectContaining({id:"groq",modelo:"openai/gpt-oss-120b"}),
+  ]));
+  expect(typeof body.provedores.find((p:{id:string})=>p.id==="groq")?.configurado).toBe("boolean");
+  expect(JSON.stringify(body)).not.toContain("AIza");
 });

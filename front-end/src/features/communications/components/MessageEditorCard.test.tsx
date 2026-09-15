@@ -103,7 +103,7 @@ describe("MessageEditorCard", () => {
     await user.click(screen.getByRole("button", { name: "Regenerar" }));
     expect(onRegenerate).toHaveBeenCalledOnce();
 
-    await user.click(screen.getByRole("button", { name: "Simular envio" }));
+    await user.click(screen.getByRole("button", { name: "Enviar" }));
     expect(onRequestSimulate).toHaveBeenCalledOnce();
   });
 });

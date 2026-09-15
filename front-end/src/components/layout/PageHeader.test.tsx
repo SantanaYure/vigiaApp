@@ -1,5 +1,8 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+vi.mock("../../services/monitoringService", () => ({
+  getMonitoringStatus: vi.fn().mockResolvedValue({state:"ativo",label:"Monitoramento ativo",lastUpdateLabel:"Última atualização há 2 min"}),
+}));
 import { PageHeader } from "./PageHeader";
 
 describe("PageHeader", () => {

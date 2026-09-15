@@ -7,4 +7,7 @@ export interface Customer {
   statusComunicacao: CommunicationStatus;
   /** Código IBGE do município do segurado, usado para cruzar com eventos climáticos reais. */
   codigoIbge: string;
+  produto?: string;
+  coberturas?: string[];
+  telefone?: string;
 }

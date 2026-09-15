@@ -48,7 +48,7 @@ export function MessageEditorCard({
           Regenerar
         </button>
         <button type="button" className={styles.primaryButton} onClick={onRequestSimulate}>
-          Simular envio
+          Enviar
         </button>
       </div>
     </div>

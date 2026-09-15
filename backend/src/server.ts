@@ -1,6 +1,7 @@
+import "dotenv/config";
 import cors from "cors";
 import express from "express";
-import { gerarMensagemStub, type ContextoEvento } from "./mensagens.js";
+import { gerarMensagemComGemini, type ContextoEvento } from "./mensagens.js";
 
 const app = express();
 app.use(cors());
@@ -15,22 +16,38 @@ function parseContexto(body: unknown): ContextoEvento | null {
   return { eventoTipo, severidade, regiao };
 }
 
-app.post("/api/gerar-mensagem", (req, res) => {
+app.post("/api/gerar-mensagem", async (req, res) => {
   const contexto = parseContexto(req.body);
   if (!contexto) {
     res.status(400).json({ erro: "eventoTipo, severidade e regiao são obrigatórios." });
     return;
   }
-  res.json({ texto: gerarMensagemStub(contexto) });
+
+  try {
+    const texto = await gerarMensagemComGemini(contexto, false);
+    res.json({ texto });
+  } catch (erro) {
+    const mensagemErro = erro instanceof Error ? erro.message : "Erro inesperado ao gerar mensagem.";
+    console.error("Erro na geração com Gemini:", mensagemErro);
+    res.status(500).json({ erro: mensagemErro });
+  }
 });
 
-app.post("/api/regenerar-mensagem", (req, res) => {
+app.post("/api/regenerar-mensagem", async (req, res) => {
   const contexto = parseContexto(req.body);
   if (!contexto) {
     res.status(400).json({ erro: "eventoTipo, severidade e regiao são obrigatórios." });
     return;
   }
-  res.json({ texto: gerarMensagemStub(contexto, true) });
+
+  try {
+    const texto = await gerarMensagemComGemini(contexto, true);
+    res.json({ texto });
+  } catch (erro) {
+    const mensagemErro = erro instanceof Error ? erro.message : "Erro inesperado ao regenerar mensagem.";
+    console.error("Erro na regeneração com Gemini:", mensagemErro);
+    res.status(500).json({ erro: mensagemErro });
+  }
 });
 
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3001;

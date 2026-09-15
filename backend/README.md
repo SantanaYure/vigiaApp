@@ -1,14 +1,17 @@
 # Vigia — Backend
 
-API mínima (Node/Express/TS) que segura o que não pode rodar no navegador. Hoje isso é só uma coisa: gerar/regenerar o texto de uma comunicação preventiva.
+API mínima (Node/Express/TS) que segura o que não pode rodar no navegador: geração e regeneração do texto de comunicações preventivas para segurados via Inteligência Artificial (**Google Gemini 2.5 Flash**).
 
 ## Por que isso existe
 
-O front-end (`../front-end/`) é uma SPA estática — qualquer chave de API colocada lá fica visível no bundle JS, então uma chamada real a um provedor de LLM (OpenAI/Anthropic/Gemini) nunca pode acontecer direto do navegador. Este backend é o lugar onde essa chamada vai morar quando a geração de mensagens virar real (depende dos prompts da Pessoa 3 e das regras da Pessoa 2 — Desafio 5 do InsurMinds).
+O front-end (`../front-end/`) é uma SPA estática — qualquer chave de API colocada lá fica visível no bundle JS, então a chamada ao provedor de LLM (Google Gemini) nunca deve acontecer direto do navegador. Este backend protege a credencial `GEMINI_API_KEY` e padroniza a geração com instruções de sistema voltadas à prevenção de sinistros e proteção de vidas/patrimônio.
 
-## Estado atual: stub
+## Geração com IA (Gemini 2.5 Flash)
 
-`POST /api/gerar-mensagem` e `POST /api/regenerar-mensagem` **não chamam nenhuma IA ainda** — devolvem um texto placeholder claramente identificado como stub (`src/mensagens.ts`). Isso prova a integração ponta a ponta (front-end → backend → resposta) sem fingir que existe geração real. Quando os prompts da Pessoa 3 e as regras da Pessoa 2 chegarem, só `mensagens.ts` muda — o contrato HTTP (rota, body, formato da resposta) fica igual, então o front-end não precisa mudar.
+As rotas `POST /api/gerar-mensagem` e `POST /api/regenerar-mensagem` utilizam o modelo **Gemini 2.5 Flash** (`gemini-2.5-flash`) através do SDK oficial `@google/genai`. 
+
+- Se `GEMINI_API_KEY` não for configurada no `.env`, a API retorna status `500` com instrução clara para configurar a chave.
+- O contrato HTTP (rota, body, formato da resposta `{ texto: string }`) é mantido fiel, garantindo total compatibilidade com o front-end.
 
 ## Rotas
 
@@ -21,14 +24,25 @@ Body:
 
 Resposta (`200`):
 ```json
-{ "texto": "[Mensagem gerada — stub] ..." }
+{ "texto": "Atenção: previsão de vendaval na região de Fortaleza, CE..." }
 ```
 
 `400` se `eventoTipo`, `severidade` ou `regiao` estiverem ausentes.
 
 ### `POST /api/regenerar-mensagem`
 
-Mesmo body e formato de resposta — o texto vem marcado como `[Mensagem regenerada — stub]`.
+Mesmo body e formato de resposta — orienta a IA a gerar uma versão alternativa, focando em checklist objetivo de segurança e ações imediatas.
+
+## Configuração de Ambiente
+
+Crie um arquivo `.env` dentro de `backend/` com base no `.env.example`:
+
+```env
+PORT=3001
+GEMINI_API_KEY=sua_chave_do_google_ai_studio
+```
+
+> Obtenha sua chave gratuitamente em [Google AI Studio](https://aistudio.google.com/).
 
 ## Rodando localmente
 

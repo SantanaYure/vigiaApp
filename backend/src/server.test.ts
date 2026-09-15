@@ -1,5 +1,15 @@
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import type { Server } from "node:http";
+
+vi.mock("./mensagens.js", () => {
+  return {
+    gerarMensagemComGemini: vi.fn().mockImplementation(async (contexto, regenerado) => {
+      const prefixo = regenerado ? "[IA regenerada]" : "[IA gerada]";
+      return `${prefixo} Alerta para ${contexto.regiao} sobre ${contexto.eventoTipo}.`;
+    }),
+  };
+});
+
 import { app } from "./server";
 
 let server: Server;
@@ -23,7 +33,7 @@ afterAll(() => {
 const CONTEXTO = { eventoTipo: "Vendaval", severidade: "Alto", regiao: "Fortaleza, CE" };
 
 describe("POST /api/gerar-mensagem", () => {
-  it("returns a stub message for a valid context", async () => {
+  it("retorna texto gerado pela IA para um contexto válido", async () => {
     const resposta = await fetch(`${baseUrl}/api/gerar-mensagem`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -32,10 +42,11 @@ describe("POST /api/gerar-mensagem", () => {
 
     expect(resposta.status).toBe(200);
     const corpo = (await resposta.json()) as { texto: string };
-    expect(corpo.texto).toContain("Vendaval");
+    expect(corpo.texto).toContain("[IA gerada]");
+    expect(corpo.texto).toContain("Fortaleza, CE");
   });
 
-  it("returns 400 when required fields are missing", async () => {
+  it("retorna 400 quando campos obrigatórios estão ausentes", async () => {
     const resposta = await fetch(`${baseUrl}/api/gerar-mensagem`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -47,7 +58,7 @@ describe("POST /api/gerar-mensagem", () => {
 });
 
 describe("POST /api/regenerar-mensagem", () => {
-  it("returns a message marked as regenerated", async () => {
+  it("retorna texto regenerado para um contexto válido", async () => {
     const resposta = await fetch(`${baseUrl}/api/regenerar-mensagem`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -56,6 +67,6 @@ describe("POST /api/regenerar-mensagem", () => {
 
     expect(resposta.status).toBe(200);
     const corpo = (await resposta.json()) as { texto: string };
-    expect(corpo.texto).toContain("regenerada");
+    expect(corpo.texto).toContain("[IA regenerada]");
   });
 });

@@ -7,17 +7,17 @@ describe("Modal", () => {
   it("renders the title, body and both actions, and focuses cancel on mount", () => {
     render(
       <Modal
-        title="Confirmar simulação de envio"
+        title="Confirmar Envio"
         cancelLabel="Cancelar"
         onCancel={vi.fn()}
-        confirmLabel="Confirmar simulação"
+        confirmLabel="Confirmar Envio"
         onConfirm={vi.fn()}
       >
         <p>1.248 segurados · Chuva intensa · RS · Porto Alegre · SMS</p>
       </Modal>,
     );
 
-    expect(screen.getByRole("dialog", { name: "Confirmar simulação de envio" })).toBeInTheDocument();
+    expect(screen.getByRole("dialog", { name: "Confirmar Envio" })).toBeInTheDocument();
     expect(screen.getByText(/1\.248 segurados/)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Cancelar" })).toHaveFocus();
   });

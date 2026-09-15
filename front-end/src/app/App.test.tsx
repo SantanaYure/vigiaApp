@@ -1,6 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+vi.mock("../services/monitoringService", () => ({
+  getMonitoringStatus: vi.fn().mockResolvedValue({state:"ativo",label:"Monitoramento ativo",lastUpdateLabel:"Última atualização há 2 min"}),
+}));
 import { App } from "./App";
 
 describe("App shell navigation", () => {

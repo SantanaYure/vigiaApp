@@ -127,13 +127,13 @@ export function CommunicationsPage() {
 
       {messageEditor.isConfirmOpen && selectedCommunication ? (
         <Modal
-          title="Confirmar simulação de envio"
+          title="Confirmar Envio"
           cancelLabel="Cancelar"
           onCancel={messageEditor.onCancelSimulate}
-          confirmLabel="Confirmar simulação"
+          confirmLabel="Confirmar Envio"
           onConfirm={messageEditor.onConfirmSimulate}
         >
-          <p className={styles.confirmIntro}>Você está prestes a simular o envio para:</p>
+          <p className={styles.confirmIntro}>Você está prestes a enviar o alerta para:</p>
           <p className={styles.confirmSummary}>
             {selectedCommunication.segurados.toLocaleString("pt-BR")} segurados · {selectedCommunication.eventoTipo}{" "}
             · {selectedEvent ? `${selectedEvent.regiao} · ` : ""}

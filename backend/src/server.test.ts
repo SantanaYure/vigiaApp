@@ -1,61 +1,17 @@
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import type { Server } from "node:http";
-import { app } from "./server";
-
-let server: Server;
-let baseUrl: string;
-
-beforeAll(() => {
-  return new Promise<void>((resolve) => {
-    server = app.listen(0, () => {
-      const address = server.address();
-      const port = typeof address === "object" && address ? address.port : 0;
-      baseUrl = `http://localhost:${port}`;
-      resolve();
-    });
+import {describe,it,expect} from "vitest";
+const BASE=process.env.VIGIA_API_URL||"http://localhost:3001";
+describe("API local real",()=>{
+  it("está disponível e expõe o modelo solicitado",async()=>{
+    const response=await fetch(BASE+"/api/health");
+    const body=await response.json();
+    expect(response.status).toBe(200);expect(body.modelo).toBe("gemini-3.5-flash");expect(body.provedor).toBe("gemini");expect(body.carteira).toBe(5);
   });
-});
-
-afterAll(() => {
-  return new Promise<void>((resolve) => server.close(() => resolve()));
-});
-
-const CONTEXTO = { eventoTipo: "Vendaval", severidade: "Alto", regiao: "Fortaleza, CE" };
-
-describe("POST /api/gerar-mensagem", () => {
-  it("returns a stub message for a valid context", async () => {
-    const resposta = await fetch(`${baseUrl}/api/gerar-mensagem`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(CONTEXTO),
-    });
-
-    expect(resposta.status).toBe(200);
-    const corpo = (await resposta.json()) as { texto: string };
-    expect(corpo.texto).toContain("Vendaval");
+  it("rejeita carteira vazia sem inventar clientes",async()=>{
+    const response=await fetch(BASE+"/api/segurados",{method:"POST",headers:{"Content-Type":"application/json"},body:"[]"});
+    expect(response.status).toBe(400);
   });
-
-  it("returns 400 when required fields are missing", async () => {
-    const resposta = await fetch(`${baseUrl}/api/gerar-mensagem`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ eventoTipo: "Vendaval" }),
-    });
-
-    expect(resposta.status).toBe(400);
-  });
-});
-
-describe("POST /api/regenerar-mensagem", () => {
-  it("returns a message marked as regenerated", async () => {
-    const resposta = await fetch(`${baseUrl}/api/regenerar-mensagem`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(CONTEXTO),
-    });
-
-    expect(resposta.status).toBe(200);
-    const corpo = (await resposta.json()) as { texto: string };
-    expect(corpo.texto).toContain("regenerada");
+  it("publica a matriz da Etapa 1",async()=>{
+    const response=await fetch(BASE+"/api/regras");const rules=await response.json();
+    expect(rules.riscos.length).toBe(14);expect(rules.fonte).toContain("Etapa 1");
   });
 });

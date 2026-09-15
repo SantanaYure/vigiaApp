@@ -16,7 +16,7 @@ Monorepo com três partes independentes, cada uma com seu próprio README:
 | Pasta | O que é | Roda com |
 |---|---|---|
 | [`front-end/`](front-end/README.md) | Aplicação Vigia (React/Vite/TS) — Dashboard, Eventos, Comunicações, Histórico. | `npm run dev` dentro de `front-end/` |
-| [`backend/`](backend/README.md) | API (Node/Express/TS) que segura o que não pode rodar no navegador — hoje, geração/regeneração de mensagem (ainda em stub, aguardando regras e prompts da equipe de seguros). | `npm run dev` dentro de `backend/` |
+| [`backend/`](backend/README.md) | API Node/Express/TS com coleta INMET, regras da Etapa 1, carteira persistida, decisões, geração Gemini e envio simulado. | `npm run dev` dentro de `backend/` |
 | [`agent/`](agent/README.md) | Agente de Coleta (Python) — busca avisos reais do INMET e gera o JSON que o front-end lê. Rodado em lote, agendado via GitHub Actions. | `python -m agent.coleta.run` na raiz |
 
 Também:
@@ -29,10 +29,15 @@ Também:
 # Terminal 1 — front-end
 cd front-end && npm install && npm run dev
 
-# Terminal 2 — backend (opcional; sem ele, "Regenerar" mantém o texto atual)
+# Terminal 2 — backend
 cd backend && npm install && npm run dev
 
-# Coletar avisos reais do INMET manualmente (opcional — já roda sozinho via GitHub Actions)
+# A carteira didática de cinco segurados é criada na primeira execução.
+# Para substituir por uma carteira autorizada, envie um JSON validado:
+node backend/scripts/import-customers.mjs caminho/para/carteira.json
+
+# O backend consulta o INMET ao iniciar e a cada 30 minutos.
+# A geração exige GEMINI_API_KEY e usa gemini-3.5-flash.
 pip install -r agent/requirements.txt
 python -m agent.coleta.run --out front-end/public/data/avisos-inmet.json
 ```

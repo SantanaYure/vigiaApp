@@ -1,23 +1,12 @@
-import { describe, expect, it } from "vitest";
-import { gerarMensagemStub } from "./mensagens";
-
-const CONTEXTO = { eventoTipo: "Vendaval", severidade: "Alto", regiao: "Fortaleza, CE" };
-
-describe("gerarMensagemStub", () => {
-  it("marks the message as a stub and includes the event context", () => {
-    const texto = gerarMensagemStub(CONTEXTO);
-
-    expect(texto).toContain("[Mensagem gerada — stub]");
-    expect(texto).toContain("Vendaval");
-    expect(texto).toContain("Alto");
-    expect(texto).toContain("Fortaleza, CE");
-  });
-
-  it("marks a regenerated message differently from a first-generation one", () => {
-    const gerado = gerarMensagemStub(CONTEXTO);
-    const regenerado = gerarMensagemStub(CONTEXTO, true);
-
-    expect(regenerado).toContain("[Mensagem regenerada — stub]");
-    expect(regenerado).not.toBe(gerado);
-  });
+import {it,expect} from "vitest";
+it("expõe Gemini padrão e Groq opcional sem expor credenciais",async()=>{
+  const response=await fetch((process.env.VIGIA_API_URL||"http://localhost:3001")+"/api/ia/provedores");
+  const body=await response.json();
+  expect(response.status).toBe(200);expect(body.ativo).toBe("gemini");
+  expect(body.provedores).toEqual(expect.arrayContaining([
+    expect.objectContaining({id:"gemini",modelo:"gemini-3.5-flash"}),
+    expect.objectContaining({id:"groq",modelo:"openai/gpt-oss-120b"}),
+  ]));
+  expect(typeof body.provedores.find((p:{id:string})=>p.id==="groq")?.configurado).toBe("boolean");
+  expect(JSON.stringify(body)).not.toContain("AIza");
 });

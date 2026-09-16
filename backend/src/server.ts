@@ -104,3 +104,4 @@ export function start() {
 }
 if(process.argv[1] && import.meta.url===pathToFileURL(process.argv[1]).href) start();
 export {app};
+export default app;

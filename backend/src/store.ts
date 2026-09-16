@@ -1,7 +1,9 @@
 import { DatabaseSync } from "node:sqlite";
 import { mkdirSync } from "node:fs";
 import { resolve, dirname } from "node:path";
-export const dbPath = resolve(process.env.VIGIA_DB_PATH || "data/vigia.sqlite");
+const configuredDbPath=process.env.VIGIA_DB_PATH;
+const defaultDbPath=process.env.VERCEL ? "/tmp/vigia.sqlite" : "data/vigia.sqlite";
+export const dbPath = resolve(configuredDbPath || defaultDbPath);
 mkdirSync(dirname(dbPath), { recursive: true });
 const db = new DatabaseSync(dbPath);
 db.exec("PRAGMA journal_mode=WAL; PRAGMA busy_timeout=5000;");

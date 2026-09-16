@@ -89,7 +89,18 @@ npm run dev
 
 Sobe em `http://localhost:3001` por padrão (configurável via variável de ambiente `PORT`).
 
-O SQLite é criado em `backend/data/vigia.sqlite` e deve ficar em um servidor persistente. Não use Vercel Functions para esta versão, pois o armazenamento local é efêmero.
+O SQLite é criado em `backend/data/vigia.sqlite` e deve ficar em um servidor persistente. A implantação na Vercel funciona como demonstração da API, usando `/tmp/vigia.sqlite`; esse armazenamento é efêmero e não deve ser usado para persistência de produção.
+
+### Vercel
+
+No projeto `backend`, configure em **Production**:
+
+- `GEMINI_API_KEY` — chave do Google AI Studio (obrigatória para gerar mensagens).
+- `GEMINI_MODEL=gemini-3.5-flash`.
+- `AI_PROVIDER=gemini`.
+- `CORS_ORIGINS` — URL do front-end publicado, se ela não estiver entre as origens padrão.
+
+`GROQ_API_KEY`, `GROQ_MODEL` e `GROQ_API_BASE_URL` são opcionais para fallback. Não configure `PORT` nem `VIGIA_DB_PATH` na Vercel. O agendamento em processo não é executado no ambiente serverless; para coleta periódica e histórico persistente, use um banco e um scheduler externos ou um servidor persistente.
 
 ## Comandos
 

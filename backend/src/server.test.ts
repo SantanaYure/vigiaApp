@@ -14,4 +14,13 @@ describe("API local real",()=>{
     const response=await fetch(BASE+"/api/regras");const rules=await response.json();
     expect(rules.riscos.length).toBe(14);expect(rules.fonte).toContain("Etapa 1");
   });
+  it("aceita o front-end local mesmo quando o Vite troca de porta",async()=>{
+    const response=await fetch(BASE+"/api/monitoramento",{headers:{Origin:"http://localhost:5174"}});
+    expect(response.status).toBe(200);
+    expect(response.headers.get("access-control-allow-origin")).toBe("http://localhost:5174");
+  });
+  it("continua bloqueando origens externas não autorizadas",async()=>{
+    const response=await fetch(BASE+"/api/monitoramento",{headers:{Origin:"https://origem-invalida.example"}});
+    expect(response.status).toBe(403);
+  });
 });

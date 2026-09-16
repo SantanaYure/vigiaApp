@@ -12,12 +12,14 @@ garantirCarteiraInicial();
 migrarStatusEnvio();
 const app=express();
 app.disable("x-powered-by");
-const origins=(process.env.CORS_ORIGINS||"http://localhost:5173,http://127.0.0.1:5173,http://localhost:4173,http://127.0.0.1:4173").split(",");
+const configuredOrigins=Boolean(process.env.CORS_ORIGINS?.trim());
+const origins=(process.env.CORS_ORIGINS||"http://localhost:5173,http://127.0.0.1:5173,http://localhost:5174,http://127.0.0.1:5174,http://localhost:4173,http://127.0.0.1:4173,http://localhost:4174,http://127.0.0.1:4174,https://vigia-front-self.vercel.app").split(",").map(origin=>origin.trim()).filter(Boolean);
+const isAllowedOrigin=(origin:string)=>origins.includes(origin)||(!configuredOrigins&&/^https?:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin));
 app.use((req,res,next)=>{
-  if(req.headers.origin && !origins.includes(req.headers.origin)){res.status(403).json({erro:"Origem não permitida."});return;}
+  if(req.headers.origin && !isAllowedOrigin(req.headers.origin)){res.status(403).json({erro:"Origem não permitida."});return;}
   res.setHeader("Cache-Control","no-store");next();
 });
-app.use(cors({origin:origins}));
+app.use(cors({origin:(origin,callback)=>callback(null,!origin||isAllowedOrigin(origin))}));
 app.use(express.json({limit:"5mb"}));
 const route=(fn:(req:Request,res:Response)=>Promise<unknown>|unknown)=>(req:Request,res:Response,next:NextFunction)=>{Promise.resolve().then(()=>fn(req,res)).catch(next);};
 app.get("/api/health",(_req,res)=>res.json({status:"ok",provedor:PROVEDOR,modelo:MODELO,carteira:all("customers").length,executando:emExecucao(),ultimaExecucao:get("meta","ultima_execucao"),ia:get("meta","ia")||{provedor:PROVEDOR,modelo:MODELO,disponivel:null}}));
